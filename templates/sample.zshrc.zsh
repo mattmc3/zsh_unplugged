@@ -1,8 +1,8 @@
 ZPLUGINDIR=$HOME/.zsh/plugins
 
-# if you want to use unplugged, you can copy paste plugin-clone, or just clone it
+# if you want to use unplugged, you can copy/paste plugin-clone here, or just pull the repo
 if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
-    git clone https://github.com/mattmc3/zsh_unplugged
+    git clone https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
 fi
 source $ZPLUGINDIR/zsh_unplugged/unplugged.zsh
 
