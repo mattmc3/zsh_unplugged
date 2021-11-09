@@ -187,8 +187,9 @@ unset repo
 Updating your plugins is as simple as deleting the $ZPLUGINDIR and reloading Zsh.
 
 ```zsh
-$ rm $ZPLUGINDIR
-$ zsh
+ZPLUGINDIR=$HOME/.zsh/plugins
+rm -rfi $ZPLUGINDIR
+zsh
 ```
 
 If you are comfortable with `git` commands and prefer to not rebuild everything, you
