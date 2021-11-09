@@ -2,6 +2,8 @@
 
 🤔 perhaps you don't need a Zsh plugin manager after all...
 
+TLDR? Ok, click here to [skip to the code](#tada-the-code).
+
 ## :electric_plug: Zsh Plugin Managers
 
 ### :newspaper_roll: Current state
