@@ -28,10 +28,6 @@ plugins=(
 
 # clone, source, and add to fpath
 for repo in $plugins; do
-    plugin-clone https://github.com/${repo}.git
-    plugindir=$ZPLUGINDIR/${repo:t}
-    source $plugindir/init.zsh
-    fpath+=$plugindir
-    [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
+    plugin-load https://github.com/${repo}.git
 done
-unset repo plugindir
+unset repo

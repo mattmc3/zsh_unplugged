@@ -69,62 +69,89 @@ you probably don't even need a Zsh plugin manager to begin with.
 
 ## :tada: The code
 
-### :gemini: plugin-clone
+### :gear: The bare metal way
 
-This simple function is the basis for everything you need to use Zsh plugins without
-the need for an official "Zsh plugin manager":
+If you don't want to use a plugin manager at all, you can simply clone and source
+plugins yourself manually:
 
 ```zsh
-# what if you don't really need a "Zsh plugin manager" after all???
-function plugin-clone () {
+ZPLUGINDIR=$HOME/.zsh/plugins
+
+if [[ ! -d $ZPLUGINDIR/zsh-autosuggestions ]]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions $ZPLUGINDIR/zsh-autosuggestions
+fi
+if [[ ! -d $ZPLUGINDIR/zsh-history-substring-search ]]; then
+  git clone https://github.com/zsh-users/zsh-history-substring-search $ZPLUGINDIR/zsh-history-substring-search
+fi
+if [[ ! -d $ZPLUGINDIR/z ]]; then
+  git clone https://github.com/rupa/z $ZPLUGINDIR/z
+fi
+
+source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+source $ZPLUGINDIR/z/z.sh
+```
+
+This can get pretty verbose.
+
+### :gemini: The `plugin-load` function
+
+If we go one level of abstraction higher, we can use a simple function as the basis for
+everything you need to use Zsh plugins:
+
+```zsh
+# clone your plugin, set up an init.zsh, source it, and add to your fpath
+function plugin-load () {
   emulate -L zsh; setopt local_options null_glob extended_glob
   local giturl="$1"
   local plugin_name=${${1##*/}%.git}
-  local plugin_subdir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
+  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
 
   # clone if the plugin isn't there already
-  if [[ ! -d $plugin_subdir ]]; then
-    command git clone --depth 1 --recursive --shallow-submodules $giturl $plugin_subdir
-    [[ $? -eq 0 ]] || { >&2 echo "plugin-clone: git clone failed; $1" && return 1 }
+  if [[ ! -d $plugindir ]]; then
+    command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
+    [[ $? -eq 0 ]] || { >&2 echo "plugin-load: git clone failed; $1" && return 1 }
   fi
 
   # symlink an init.zsh if there isn't one so the plugin is easy to source
-  if [[ ! -f $plugin_subdir/init.zsh ]]; then
+  if [[ ! -f $plugindir/init.zsh ]]; then
     local initfiles=(
       # look for specific files first
-      $plugin_subdir/$plugin_name.plugin.zsh(N)
-      $plugin_subdir/$plugin_name.zsh(N)
-      $plugin_subdir/$plugin_name(N)
-      $plugin_subdir/$plugin_name.zsh-theme(N)
+      $plugindir/$plugin_name.plugin.zsh(N)
+      $plugindir/$plugin_name.zsh(N)
+      $plugindir/$plugin_name(N)
+      $plugindir/$plugin_name.zsh-theme(N)
       # then do more aggressive globbing
-      $plugin_subdir/*.plugin.zsh(N)
-      $plugin_subdir/*.zsh(N)
-      $plugin_subdir/*.zsh-theme(N)
-      $plugin_subdir/*.sh(N)
+      $plugindir/*.plugin.zsh(N)
+      $plugindir/*.zsh(N)
+      $plugindir/*.zsh-theme(N)
+      $plugindir/*.sh(N)
     )
-    [[ ${#initfiles[@]} -gt 0 ]] || { >&2 echo "plugin-clone: no plugin init file found" && return 1 }
-    command ln -s ${initfiles[1]} $plugin_subdir/init.zsh
+    [[ ${#initfiles[@]} -gt 0 ]] || { >&2 echo "plugin-load: no plugin init file found" && return 1 }
+    command ln -s ${initfiles[1]} $plugindir/init.zsh
   fi
+
+  # source the plugin
+  source $plugindir/init.zsh
+
+  # modify fpath
+  fpath+=$plugindir
+  [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
 }
 ```
 
-That's it. ~30 lines of code and you have eveything you need to use Zsh plugins.
+That's it. ~40 lines of code and you have eveything you need to get Zsh plugins.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then symlink an
 "init.zsh", which allows us to get the performance advantage of static sourcing rather
-than searching for which files to load every time we open a new terminal.
+than searching for which plugin files to load every time we open a new terminal.
 
-If the plugin is alread cloned and an init.zsh file exists, then this function exits
-fast with no major operations, meaning you can call `plugin-clone` without fear of
-slowing down your .zshrc.
+Then, the init.zsh is sourced and the plugin is added to the `fpath`.
 
-### :question: How do I actually load my plugins?
+### :question: How do I actually load (source) my plugins?
 
-To use `plugin-clone`, simply add that function to your `.zshrc` file, or source
-`unplugged.zsh` from this repo if you prefer.
-
-Then, to use plugins, add a snippet like the following to your `.zshrc`:
+Add a snippet like the following to your `.zshrc`:
 
 ```zsh
 # where should we store your Zsh plugins?
@@ -132,41 +159,43 @@ ZPLUGINDIR=$HOME/.zsh/plugins
 
 # add your plugins to this list
 plugins=(
-    # core plugins
-    mafredri/zsh-async
-    zsh-users/zsh-autosuggestions
-    zsh-users/zsh-history-substring-search
+  # core plugins
+  mafredri/zsh-async
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-history-substring-search
 
-    # user plugins
-    rupa/z
-    peterhurford/up.zsh
-    rummik/zsh-tailf
+  # user plugins
+  rupa/z
+  peterhurford/up.zsh
+  rummik/zsh-tailf
 
-    # prompts
-    sindresorhus/pure
+  # prompts
+  sindresorhus/pure
 
-    # load this one last
-    zsh-users/zsh-syntax-highlighting
+  # load this one last
+  zsh-users/zsh-syntax-highlighting
 )
 
 # clone, source, and add to fpath
 for repo in $plugins; do
-    plugin-clone https://github.com/${repo}.git
-    plugindir=$ZPLUGINDIR/${repo:t}
-    source $plugindir/init.zsh
-    fpath+=$plugindir
-    [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
+  plugin-load https://github.com/${repo}.git
 done
-unset repo plugindir
+unset repo
 ```
 
 ### :question: How do I update my plugins?
 
-Updating your plugins is as simple as doing a `git pull` on the plugins you've cloned.
-If you aren't comfortable with `git` commands, or prefer a function to help you do this,
-here's a simple `plugin-update` function you can use.
+Updating your plugins is as simple as deleting the $ZPLUGINDIR and reloading Zsh.
 
-```shell
+```zsh
+$ rm $ZPLUGINDIR
+$ zsh
+```
+
+If you are comfortable with `git` commands and prefer to not rebuild everything, you
+can run `git pull` yourself, or even use a simple `plugin-update` function:
+
+```zsh
 function plugin-update () {
   emulate -L zsh; setopt local_options null_glob extended_glob
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
@@ -181,14 +210,14 @@ function plugin-update () {
 
 You can see what plugins you have installed with a simple `ls` command:
 
-```shell
+```zsh
 ls $ZPLUGINDIR
 ```
 
 If you need something fancier and would like to see the git origin of your plugins, you
 could run this command:
 
-```shell
+```zsh
 for d in $ZPLUGINDIR/*/.git; do
   git -C "${d:h}" remote get-url origin
 done
@@ -199,7 +228,7 @@ done
 You can just remove it from your `plugins` list in your .zshrc. To delete it
 alltogether, feel free to run `rm`:
 
-```shell
+```zsh
 # remove the fast-syntax-highlighting plugin
 rm -rfi $ZPLUGINDIR/fast-syntax-highlighting
 ```
@@ -211,7 +240,7 @@ Zsh scripts and potentially speeds them up by compiling them to byte code. If yo
 confident you know what you're doing and want to eek every last bit of performance out
 of your Zsh, you can use this function
 
-```shell
+```zsh
 function plugin-compile () {
   emulate -L zsh; setopt local_options null_glob extended_glob
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
