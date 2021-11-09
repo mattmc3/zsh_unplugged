@@ -149,13 +149,15 @@ plugins=(
     zsh-users/zsh-syntax-highlighting
 )
 
-# clone and source
-for plugin in $plugins
-do
-    plugin-clone https://github.com/${plugin}.git
-    source $ZPLUGINDIR/${plugin:t}/init.zsh
+# clone, source, and add to fpath
+for repo in $plugins; do
+    plugin-clone https://github.com/${repo}.git
+    plugindir=$ZPLUGINDIR/${repo:t}
+    source $plugindir/init.zsh
+    fpath+=$plugindir
+    [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
 done
-unset plugin
+unset repo plugindir
 ```
 
 ### :question: How do I update my plugins?

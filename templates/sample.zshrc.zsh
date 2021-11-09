@@ -1,3 +1,4 @@
+# where should we store your Zsh plugins?
 ZPLUGINDIR=$HOME/.zsh/plugins
 
 # if you want to use unplugged, you can copy/paste plugin-clone here, or just pull the repo
@@ -6,6 +7,7 @@ if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
 fi
 source $ZPLUGINDIR/zsh_unplugged/unplugged.zsh
 
+# add your plugins to this list
 plugins=(
   # core plugins
   mafredri/zsh-async
@@ -23,8 +25,13 @@ plugins=(
   # load this one last
   zsh-users/zsh-syntax-highlighting
 )
-for plugin in $plugins; do
-    plugin-clone https://github.com/${plugin}.git
-    source $ZPLUGINDIR/${plugin:t}/init.zsh
+
+# clone, source, and add to fpath
+for repo in $plugins; do
+    plugin-clone https://github.com/${repo}.git
+    plugindir=$ZPLUGINDIR/${repo:t}
+    source $plugindir/init.zsh
+    fpath+=$plugindir
+    [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
 done
-unset plugin
+unset repo plugindir
