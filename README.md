@@ -30,7 +30,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | [zinit-continuum]  | :rabbit2: fast     | :hatching_chick: New, possibly maintenance only |
 | [zinit]            | :rabbit2: fast     | :cursing_face: Author deleted project           |
 | [zit]              | :question: unknown | :imp: No recent commits                         |
-| [znap]             | :raccoon: average  | :white_check_mark: Active                       |
+| [znap]             | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zplug]            | :turtle: slow      | :skull_and_crossbones: Abandonware              |
 | [zplugin][zinit]   | :rabbit2: fast     | :cursing_face: Renamed to zinit, author deleted |
 | [zpm]              | :rabbit2: fast     | :white_check_mark: Active                       |
