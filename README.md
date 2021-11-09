@@ -7,8 +7,8 @@
 ### :newspaper_roll: Current state
 
 There are an embarassingly large number of Zsh plugin managers out there. Many of them
-are abandonware or no longer actively developed, or brand new without many users or
-without much reason to even exist other than as a novelty.
+are abandonware, are no longer actively developed, are brand new without many users, or
+don't have much reason to even exist other than as a novelty.
 
 Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 
@@ -223,7 +223,7 @@ function plugin-compile () {
 [antibody]: https://github.com/getantibody/antibody
 [antigen]: https://github.com/zsh-users/antigen
 [mzpm]: https://github.com/xylous/mzpm
-[pz]: https://github.com/matmc3/pz
+[pz]: https://github.com/mattmc3/pz
 [sheldon]: https://github.com/rossmacarthur/sheldon
 [tzpm]: https://github.com/notusknot/tzpm
 [uz]: https://github.com/maxrodrigo/uz
