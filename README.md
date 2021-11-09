@@ -64,8 +64,8 @@ kept wondering if I could cut further from a single file to a single function.
 
 Thus was born... **zsh_unplugged**.
 
-This isn't a plugin manager - it's a way to once and for all convince you that you
-probably don't need a plugin manager to begin with.
+This isn't a plugin manager - it's a way to perhaps once-and-for-all convince you that
+you probably don't even need a Zsh plugin manager to begin with.
 
 ## :tada: The code
 
