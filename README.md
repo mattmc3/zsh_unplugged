@@ -108,10 +108,12 @@ function plugin-clone () {
 }
 ```
 
-What it does is simply clones a Zsh plugin's git repository, and then examines that repo
-for an appropriate .zsh file to use as an init script. Once cloned, we then symlink
-an init.zsh so that we can then load the plugin with a known file. By using "init.zsh",
-we get the performance advantage of static sourcing.
+That's it. ~30 lines of code and you have eveything you need to use Zsh plugins.
+
+What this does is simply clones a Zsh plugin's git repository, and then examines that
+repo for an appropriate .zsh file to use as an init script. We then symlink an
+"init.zsh", which allows us to get the performance advantage of static sourcing rather
+than searching for which files to load every time we open a new terminal.
 
 If the plugin is alread cloned and an init.zsh file exists, then this function exits
 fast with no major operations, meaning you can call `plugin-clone` without fear of
