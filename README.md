@@ -24,6 +24,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | [tzpm]             | :question: unknown | :hatching_chick: New                            |
 | [uz]               | :question: unknown | :hatching_chick: New                            |
 | [zcomet]           | :rabbit2: fast     | :white_check_mark: Active                       |
+| [zed]              | :question: unknown | :hatching_chick: New                            |
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
 | [zgen]             | :rabbit2: fast     | :skull_and_crossbones: Abandonware              |
 | [zgenom]           | :rabbit2: fast     | :white_check_mark: Active                       |
@@ -262,6 +263,7 @@ function plugin-compile () {
 [tzpm]: https://github.com/notusknot/tzpm
 [uz]: https://github.com/maxrodrigo/uz
 [zcomet]: https://github.com/agkozak/zcomet
+[zed]: https://github.com/MunifTanjim/zed
 [zgem]: https://github.com/qoomon/zgem
 [zgen]: https://github.com/tarjoilija/zgen
 [zgenom]: https://github.com/jandamm/zgenom
