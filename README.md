@@ -15,7 +15,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | Zsh Plugin Manager | Performance        | Current state                                   |
 |--------------------|--------------------|-------------------------------------------------|
 | [antibody]         | :rabbit2: fast     | :imp: Maintenance mode, no new features         |
-| [antigen]          | :turtle: slow      | :skull_and_crossbones: No commits in years      |
+| [antigen]          | :turtle: slow      | :imp: Maintenance mode, no new features         |
 | [mzpm]             | :question: unknown | :hatching_chick: New                            |
 | [pz]               | :rabbit2: fast     | :white_check_mark: Active                       |
 | [sheldon]          | :question: unknown | :white_check_mark: Active                       |
@@ -25,7 +25,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
 | [zgen]             | :rabbit2: fast     | :skull_and_crossbones: Abandonware              |
 | [zgenom]           | :rabbit2: fast     | :white_check_mark: Active                       |
-| [zinit-continuum]  | :rabbit2: fast     | :question: Too early to know                    |
+| [zinit-continuum]  | :rabbit2: fast     | :hatching_chick: New, possibly maintenance only |
 | [zinit]            | :rabbit2: fast     | :cursing_face: Author deleted project           |
 | [zit]              | :question: unknown | :imp: No recent commits                         |
 | [znap]             | :raccoon: average  | :white_check_mark: Active                       |
