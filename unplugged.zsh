@@ -40,7 +40,6 @@ function plugin-load () {
 
 # if you want to compile your plugins you may see performance gains
 function plugin-compile () {
-  emulate -L zsh; setopt local_options null_glob extended_glob
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
   autoload -U zrecompile
   local f

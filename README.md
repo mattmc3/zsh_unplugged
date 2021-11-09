@@ -196,7 +196,6 @@ can run `git pull` yourself, or even use a simple `plugin-update` function:
 
 ```zsh
 function plugin-update () {
-  emulate -L zsh; setopt local_options null_glob extended_glob
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
   for d in $plugindir/*/.git(/); do
     echo "Updating ${d:h:t}..."
@@ -241,7 +240,6 @@ of your Zsh, you can use this function
 
 ```zsh
 function plugin-compile () {
-  emulate -L zsh; setopt local_options null_glob extended_glob
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
   autoload -U zrecompile
   local f
