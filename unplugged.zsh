@@ -2,7 +2,6 @@
 
 # clone your plugin, set up an init.zsh, source it, and add to your fpath
 function plugin-load () {
-  emulate -L zsh; setopt local_options null_glob extended_glob
   local giturl="$1"
   local plugin_name=${${1##*/}%.git}
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
