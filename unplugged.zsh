@@ -31,4 +31,24 @@ function plugin-clone () {
     command ln -s ${initfiles[1]} $plugin_subdir/init.zsh
   fi
 }
+
+# if you want to compile your plugins you may see performance gains
+function plugin-compile () {
+  emulate -L zsh; setopt local_options null_glob extended_glob
+  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
+  autoload -U zrecompile
+  local f
+  for f in $plugindir/**/*.zsh{,-theme}; do
+    zrecompile -pq "$f"
+  done
+}
+
+# updating your plugins is as simple as doing a git pull
+function plugin-update () {
+  emulate -L zsh; setopt local_options null_glob extended_glob
+  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
+  for d in $plugindir/*/.git(/); do
+    echo "Updating ${d:h:t}..."
+    command git -C "${d:h}" pull --ff --recurse-submodules --depth 1 --rebase --autostash
+  done
 }
