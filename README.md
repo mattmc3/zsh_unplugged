@@ -200,7 +200,7 @@ rm -rfi $ZPLUGINDIR/fast-syntax-highlighting
 
 ### :question: What if I want my plugins to be even faster?
 
-If you are an experienced Zsh user, you may know about `zcompile`, which takes your
+If you are an experienced Zsh user, you may know about [zcompile], which takes your
 Zsh scripts and potentially speeds them up by compiling them to byte code. If you feel
 confident you know what you're doing and want to eek every last bit of performance out
 of your Zsh, you can use this function
@@ -220,6 +220,7 @@ function plugin-compile () {
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
 [awesome-zsh-plugins]: https://github.com/unixorn/awesome-zsh-plugins
 [zdharma-debacle]: https://www.reddit.com/r/zsh/comments/qinb6j/httpsgithubcomzdharma_has_suddenly_disappeared_i/
+[zcompile]: https://github.com/antonio/zsh-config/blob/master/help/zcompile
 [antibody]: https://github.com/getantibody/antibody
 [antigen]: https://github.com/zsh-users/antigen
 [mzpm]: https://github.com/xylous/mzpm
