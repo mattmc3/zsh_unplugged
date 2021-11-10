@@ -285,7 +285,7 @@ plugin manager free with Zsh frameworks:
 
 #### Oh-My-Zsh
 
-If you are using Oh-My-Zsh, the way to go without a plugin manager would be to utilize
+If you are using [Oh-My-Zsh][ohmyzsh], the way to go without a plugin manager would be to utilize
 the `$ZSH_CUSTOM` path.
 
 ```zsh
@@ -310,7 +310,7 @@ plugins=(
 
 #### Prezto
 
-If you are using Prezto, the way to go without a plugin manager would be to utilize
+If you are using [Prezto][prezto], the way to go without a plugin manager would be to utilize
 the `$ZPREZTODIR/contrib` path.
 
 ```zsh
@@ -358,5 +358,5 @@ zstyle ':prezto:load' pmodule \
 [zpm]: https://github.com/zpm-zsh/zpm
 [zr]: https://github.com/jedahan/zr
 [#1]: https://github.com/mattmc3/zsh_unplugged/issues/1
-[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh
+[ohmyzsh]: https://github.com/ohmyzsh/ohmyzsh
 [prezto]: https://github.com/sorin-ionescu/prezto
