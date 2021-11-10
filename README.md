@@ -28,7 +28,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
 | [zgen]             | :rabbit2: fast     | :skull_and_crossbones: Abandonware              |
 | [zgenom]           | :rabbit2: fast     | :white_check_mark: Active                       |
-| [zinit-continuum]  | :rabbit2: fast     | :hatching_chick: New, possibly maintenance only |
+| [zinit-continuum]  | :rabbit2: fast     | :white_check_mark: Active [\*][#1]              |
 | [zinit]            | :rabbit2: fast     | :cursing_face: Author deleted project           |
 | [zit]              | :question: unknown | :imp: No recent commits                         |
 | [znap]             | :rabbit2: fast     | :white_check_mark: Active                       |
@@ -52,7 +52,9 @@ removed from GitHub entirely and without warning. In fact, the author
 
 Zinit was really popular because it was super fast, and the author promoted his projects
 in multiple venues for many years. However, [zinit was complicated][zinit-docs-reddit],
-and despite having prolific documentation, it was difficult to understand.
+and despite having prolific documentation, it was difficult to understand. (_Quick
+shoutout to the folks running [zdharma-continuum] though - great work keeping those
+projects alive!_)
 
 With the instablility in the Zsh plugin space, it got me wondering why I even use a
 plugin manager at all.
@@ -254,6 +256,7 @@ function plugin-compile () {
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
 [awesome-zsh-plugins]: https://github.com/unixorn/awesome-zsh-plugins
 [zdharma-debacle]: https://www.reddit.com/r/zsh/comments/qinb6j/httpsgithubcomzdharma_has_suddenly_disappeared_i/
+[zdharma-continuum]: https://github.com/zdharma-continuum
 [zcompile]: https://github.com/antonio/zsh-config/blob/master/help/zcompile
 [antibody]: https://github.com/getantibody/antibody
 [antigen]: https://github.com/zsh-users/antigen
@@ -274,3 +277,5 @@ function plugin-compile () {
 [zplug]: https://github.com/zplug/zplug
 [zpm]: https://github.com/zpm-zsh/zpm
 [zr]: https://github.com/jedahan/zr
+[#1]: https://github.com/mattmc3/zsh_unplugged/issues/1
+
