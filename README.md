@@ -44,7 +44,10 @@ Full disclosure, I'm even the author of one of these - [pz].
 A little while ago, the plugin manager I was using, [antibody], was deprecated.
 The author even [went so far as to say](https://github.com/getantibody/antibody/tree/2ca7616ae78754c0ab70790229f5d19be42206e9):
 
-> Most of the other plugin managers catch up on performance, thus keeping this does not make sense anymore.
+> Most of the other plugin managers catch up on performance, thus keeping this \[antibody] does not make sense anymore.
+
+Prior to that, I used [zgen], which also stopped being actively developed and the
+[developer](https://github.com/tarjoilija) seems to have disappeared.
 
 Even more recently, a relatively well known and popular Zsh plugin manager, zinit, was
 removed from GitHub entirely and without warning. In fact, the author
@@ -61,21 +64,26 @@ plugin manager at all.
 
 ### :bulb: The simple idea
 
+After [antibody] was deprecated, I tried [znap], but it was in active development and
+kept breaking, so like many others before me, I decided to write my own - [pz].
+
 When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
-that was fast, functional, and easy to understand. While [pz] is a great project, I
-kept wondering if I could cut further from a single file to a single function.
+that was fast, functional, and easy to understand, which was everything I loved about
+[zgen]. While [pz] is a great project, I kept wondering if I could cut further from
+a single file to a single function.
 
 Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to perhaps once-and-for-all convince you that
-you probably don't even need a Zsh plugin manager to begin with.
+you probably don't even need a Zsh plugin manager to begin with. Grab a simple ~40 line
+function and you have everything you need to manage your own plugins from here on out.
 
 ## :tada: The code
 
 ### :gear: The bare metal way
 
-If you don't want to use a plugin manager at all, you can simply clone and source
-plugins yourself manually:
+If you don't want to use anything resemblineg a plugin manager at all, you can simply
+clone and source plugins yourself manually:
 
 ```zsh
 ZPLUGINDIR=$HOME/.zsh/plugins
@@ -95,12 +103,14 @@ source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.plu
 source $ZPLUGINDIR/z/z.sh
 ```
 
-This can get pretty verbose.
+This can get pretty verbose and tricky to maintain. You also need to figure out each
+plugin's init file, and sometimes adding a plugin and its functions dir to your `fpath`
+is required. While this method works, there's another way...
 
-### :gemini: The `plugin-load` function
+### :gemini: The humble `plugin-load` function
 
-If we go one level of abstraction higher, we can use a simple function as the basis for
-everything you need to use Zsh plugins:
+If we go one level of abstraction higher than manual `git clone` calls, we can use a
+simple function wrapper as the basis for everything you need to use Zsh plugins:
 
 ```zsh
 # clone your plugin, set up an init.zsh, source it, and add to your fpath
