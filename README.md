@@ -291,7 +291,7 @@ the `$ZSH_CUSTOM` path.
 ```zsh
 external_plugins=(
   zsh-users/zsh-autosuggestions
-  peterhurford/up.zsh
+  marlonrichert/zsh-hist
 )
 for repo in $external_plugins; do
   if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
@@ -302,7 +302,7 @@ done
 # add plugins to your OMZ plugins list
 plugins=(
    ...
-   up.zsh
+   zsh-hist
    zsh-autosuggestions
    ...
 )
@@ -316,7 +316,7 @@ the `$ZPREZTODIR/contrib` path.
 ```zsh
 external_plugins=(
   rupa/z
-  peterhurford/up.zsh
+  marlonrichert/zsh-hist
 )
 for repo in $external_plugins; do
   if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
@@ -329,7 +329,7 @@ done
 zstyle ':prezto:load' pmodule \
    ... \
    z \
-   up.zsh \
+   zsh-hist \
    ...
 ```
 
