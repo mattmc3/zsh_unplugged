@@ -26,7 +26,7 @@ Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
 | [zcomet]           | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zed]              | :question: unknown | :hatching_chick: New                            |
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
-| [zgen]             | :rabbit2: fast     | :skull_and_crossbones: Abandonware              |
+| [zgen]             | :rabbit2: fast     | :imp: No recent commits                         |
 | [zgenom]           | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zinit-continuum]  | :rabbit2: fast     | :white_check_mark: Active [\*][#1]              |
 | [zinit]            | :rabbit2: fast     | :cursing_face: Author deleted project           |
