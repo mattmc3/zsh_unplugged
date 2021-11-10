@@ -55,9 +55,11 @@ removed from GitHub entirely and without warning. In fact, the author
 
 Zinit was really popular because it was super fast, and the author promoted his projects
 in multiple venues for many years. However, [zinit was complicated][zinit-docs-reddit],
-and despite having prolific documentation, it was difficult to understand. (_Quick
-shoutout to the folks running [zdharma-continuum] though - great work keeping those
-projects alive!_)
+and despite having prolific documentation, it was difficult to understand. And, it
+drove other Zsh plugin managers to focus on performance, which closed the gap.
+
+(_Quick shoutout to the folks running [zdharma-continuum] though - great work keeping
+Zinit alive!_)
 
 With the instablility in the Zsh plugin space, it got me wondering why I even use a
 plugin manager at all.
@@ -68,15 +70,20 @@ After [antibody] was deprecated, I tried [znap], but it was in active developmen
 kept breaking, so like many others before me, I decided to write my own - [pz].
 
 When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
-that was fast, functional, and easy to understand, which was everything I loved about
+that was fast, functional, and easy to understand - which was everything I loved about
 [zgen]. While [pz] is a great project, I kept wondering if I could cut further from
-a single file to a single function.
+a single file to a single function and do away with plugin management utilities
+alltogether.
 
 Thus was born... **zsh_unplugged**.
 
-This isn't a plugin manager - it's a way to perhaps once-and-for-all convince you that
-you probably don't even need a Zsh plugin manager to begin with. Grab a simple ~40 line
-function and you have everything you need to manage your own plugins from here on out.
+This isn't a plugin manager - it's a way to show you how to manage your plugins without
+one using small, easy to understand snippets of Zsh. All this with the hope that
+perhaps, once-and-for-all, we can do away with the idea that we even need to use a Zsh
+plugin manager.
+
+You can simply grab a ~40 line function and you have everything you need to manage your
+own plugins from here on out.
 
 ## :tada: The code
 
@@ -103,14 +110,15 @@ source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.plu
 source $ZPLUGINDIR/z/z.sh
 ```
 
-This can get pretty verbose and tricky to maintain. You also need to figure out each
+This can get pretty cumbersome and tricky to maintain. You need to figure out each
 plugin's init file, and sometimes adding a plugin and its functions dir to your `fpath`
 is required. While this method works, there's another way...
 
 ### :gemini: The humble `plugin-load` function
 
 If we go one level of abstraction higher than manual `git clone` calls, we can use a
-simple function wrapper as the basis for everything you need to use Zsh plugins:
+simple function wrapper as the basis for everything you need to manage your own Zsh
+plugins:
 
 ```zsh
 # clone your plugin, set up an init.zsh, source it, and add to your fpath
@@ -152,7 +160,8 @@ function plugin-load () {
 }
 ```
 
-That's it. ~40 lines of code and you have eveything you need to get Zsh plugins.
+That's it. ~40 lines of code and you have a simple, robust Zsh plugin management
+alternative.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then symlink an
@@ -163,10 +172,14 @@ Then, the init.zsh is sourced and the plugin is added to the `fpath`.
 
 ### :question: How do I actually load (source) my plugins?
 
-Add a snippet like the following to your `.zshrc`:
+After grabbing the `plugin-load` function, add a snippet like the following to your
+`.zshrc`:
 
 ```zsh
-# where should we store your Zsh plugins?
+# ...the plugin-load function goes here, or sourced from a separate file
+# function plugin-load () { ... }
+
+# set where we should store Zsh plugins
 ZPLUGINDIR=$HOME/.zsh/plugins
 
 # add your plugins to this list
@@ -188,7 +201,7 @@ plugins=(
   zsh-users/zsh-syntax-highlighting
 )
 
-# clone, source, and add to fpath
+# load your plugins (clone, source, and add to fpath)
 for repo in $plugins; do
   plugin-load https://github.com/${repo}.git
 done
@@ -238,7 +251,7 @@ done
 ### :question: How do I remove a plugin?
 
 You can just remove it from your `plugins` list in your .zshrc. To delete it
-alltogether, feel free to run `rm`:
+altogether, feel free to run `rm`:
 
 ```zsh
 # remove the fast-syntax-highlighting plugin
@@ -261,6 +274,63 @@ function plugin-compile () {
     zrecompile -pq "$f"
   done
 }
+```
+
+### :question: How can I use this with Zsh frameworks like Oh-My-Zsh or Prezto?
+
+[Oh-My-Zsh][ohmyzsh] and [Prezto][prezto] have their own built-in methods for managing
+the loading of plugins. You don't need this script if you are using those frameworks.
+However, you also don't need a separate plugin manager utility. Here's how you go
+plugin manager free with Zsh frameworks:
+
+#### Oh-My-Zsh
+
+If you are using Oh-My-Zsh, the way to go without a plugin manager would be to utilize
+the `$ZSH_CUSTOM` path.
+
+```zsh
+external_plugins=(
+  zsh-users/zsh-autosuggestions
+  peterhurford/up.zsh
+)
+for repo in $external_plugins; do
+  if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
+    git clone https://github.com/${repo} $ZSH_CUSTOM/${repo:t}
+  fi
+done
+
+# add plugins to your OMZ plugins list
+plugins=(
+   ...
+   up.zsh
+   zsh-autosuggestions
+   ...
+)
+```
+
+#### Prezto
+
+If you are using Prezto, the way to go without a plugin manager would be to utilize
+the `$ZPREZTODIR/contrib` path.
+
+```zsh
+external_plugins=(
+  rupa/z
+  peterhurford/up.zsh
+)
+for repo in $external_plugins; do
+  if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
+    git clone https://github.com/${repo} $ZPREZTODIR/contrib/${repo:t}/external
+    echo "source \${0:A:h}/external/${repo:t}.plugin.zsh" > $ZPREZTODIR/contrib/${repo:t}/init.zsh
+  fi
+done
+
+# add plugins to your Prezto plugins list in .zpreztorc
+zstyle ':prezto:load' pmodule \
+   ... \
+   z \
+   up.zsh \
+   ...
 ```
 
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
@@ -288,4 +358,5 @@ function plugin-compile () {
 [zpm]: https://github.com/zpm-zsh/zpm
 [zr]: https://github.com/jedahan/zr
 [#1]: https://github.com/mattmc3/zsh_unplugged/issues/1
-
+[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh
+[prezto]: https://github.com/sorin-ionescu/prezto
