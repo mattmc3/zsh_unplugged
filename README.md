@@ -66,8 +66,8 @@ bother with a plugin manager at all.
 
 ### :bulb: The simple idea
 
-After [antibody] was deprecated, I tried [znap], but it was in active development and
-kept breaking, so like many others before me, I decided to write my own - [pz].
+After [antibody] was deprecated, I tried [znap], but it was in early development at the
+time and kept breaking, so like many others before me, I decided to write my own - [pz].
 
 When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
 that was fast, functional, and easy to understand - which was everything I loved about
