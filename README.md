@@ -345,7 +345,7 @@ zstyle ':prezto:load' pmodule \
   z \
   zsh-hist \
   ... \
-  zsh-syntax-highlighting \
+  zsh-syntax-highlighting
 ```
 
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
