@@ -1,15 +1,15 @@
 # unplugged: https://github.com/mattmc3/zsh_unplugged
 
-# clone your plugin, set up an init.zsh, source it, and add to your fpath
+# clone a plugin, find an init.zsh, source it, and add it to your fpath
 function plugin-load () {
   local giturl="$1"
-  local plugin_name=${${1##*/}%.git}
+  local plugin_name=${${giturl##*/}%.git}
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
 
   # clone if the plugin isn't there already
   if [[ ! -d $plugindir ]]; then
     command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
-    [[ $? -eq 0 ]] || { >&2 echo "plugin-load: git clone failed; $1" && return 1 }
+    [[ $? -eq 0 ]] || { >&2 echo "plugin-load: git clone failed; $giturl" && return 1 }
   fi
 
   # symlink an init.zsh if there isn't one so the plugin is easy to source
