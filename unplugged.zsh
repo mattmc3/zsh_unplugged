@@ -43,7 +43,7 @@ function plugin-compile () {
   local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
   autoload -U zrecompile
   local f
-  for f in $plugindir/**/*.zsh{,-theme}; do
+  for f in $plugindir/**/*.zsh{,-theme}(N); do
     zrecompile -pq "$f"
   done
 }
