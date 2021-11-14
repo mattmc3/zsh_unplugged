@@ -1,7 +1,8 @@
 # where should we store your Zsh plugins?
 ZPLUGINDIR=$HOME/.zsh/plugins
 
-# if you want to use unplugged, you can copy/paste plugin-clone here, or just pull the repo
+# if you want to use zsh_unplugged, you can either copy/paste the plugin-load function
+# here, source a Zsh file with the function, or just clone the repo
 if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
   git clone https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
 fi
