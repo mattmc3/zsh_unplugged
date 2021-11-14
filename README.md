@@ -2,7 +2,7 @@
 
 🤔 perhaps you don't need a Zsh plugin manager after all...
 
-TLDR? Click here to [skip to the code](#gemini-the-humble-plugin-load-function).
+TLDR? Click here to [skip to the code](#jigsaw-the-humble-plugin-load-function).
 
 ## :electric_plug: Zsh Plugin Managers
 
@@ -114,7 +114,7 @@ This can get pretty cumbersome and tricky to maintain. You need to figure out ea
 plugin's init file, and sometimes adding a plugin and its functions dir to your `fpath`
 is required. While this method works, there's another way...
 
-### :gemini: The humble `plugin-load` function
+### :jigsaw: The humble `plugin-load` function
 
 If we go one level of abstraction higher than manual `git clone` calls, we can use a
 simple function wrapper as the basis for everything you need to manage your own Zsh
