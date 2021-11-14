@@ -288,23 +288,28 @@ plugin manager free with Zsh frameworks:
 If you are using [Oh-My-Zsh][ohmyzsh], the way to go without a plugin manager would be to utilize
 the `$ZSH_CUSTOM` path.
 
+
+_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not be true._
+
 ```zsh
 external_plugins=(
   zsh-users/zsh-autosuggestions
   marlonrichert/zsh-hist
+  zsh-users/zsh-syntax-highlighting
 )
 for repo in $external_plugins; do
   if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
-    git clone https://github.com/${repo} $ZSH_CUSTOM/${repo:t}
+    git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
   fi
 done
 
-# add plugins to your OMZ plugins list
+# add your external plugins to your OMZ plugins list
 plugins=(
    ...
    zsh-hist
    zsh-autosuggestions
    ...
+   zsh-syntax-highlighting
 )
 ```
 
@@ -313,10 +318,13 @@ plugins=(
 If you are using [Prezto][prezto], the way to go without a plugin manager would be to utilize
 the `$ZPREZTODIR/contrib` path.
 
+_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not be true._
+
 ```zsh
 external_plugins=(
   rupa/z
   marlonrichert/zsh-hist
+  zsh-users/zsh-syntax-highlighting
 )
 for repo in $external_plugins; do
   if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
@@ -330,7 +338,8 @@ zstyle ':prezto:load' pmodule \
    ... \
    z \
    zsh-hist \
-   ...
+   ... \
+   zsh-syntax-highlighting \
 ```
 
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
