@@ -56,16 +56,13 @@ Prior to that, I used [zgen], which also stopped being actively developed and th
 
 In November 2021, a relatively well known and popular Zsh plugin manager, zinit, was
 removed from GitHub entirely and without warning. In fact, the author
-[deleted almost his entire body of work][zdharma-debacle].
-
-Zinit was really popular because it was super fast, and the author promoted his projects
-in multiple venues for many years.
-
-(_Quick shoutout to the folks running [zdharma-continuum] though - great work keeping
-Zinit alive!_)
+[deleted almost his entire body of work][zdharma-debacle]. Zinit was really popular
+because it was super fast, and the author promoted his projects in multiple venues
+for many years. (_Quick shoutout to the folks running [zdharma-continuum] though -
+great work keeping Zinit alive!_)
 
 With the instablility in the Zsh plugin manager space, it got me wondering why I even
-use a plugin manager at all.
+bother with a plugin manager at all.
 
 ### :bulb: The simple idea
 
@@ -81,9 +78,9 @@ alltogether.
 Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to show you how to manage your own plugins
-without one using small, easy to understand snippets of Zsh. All this with the hope that
-perhaps, once-and-for-all, we can do away with the idea that we even need to use a Zsh
-plugin manager.
+using small, easy to understand snippets of Zsh. All this with the hope that perhaps,
+once-and-for-all, we can do away with the idea that we even need to use a Zsh
+plugin manager project and just do it ourselves.
 
 You can simply grab a ~40 line function and you have everything you need to manage your
 own plugins from here on out.
