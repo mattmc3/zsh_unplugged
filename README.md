@@ -2,7 +2,7 @@
 
 🤔 perhaps you don't need a Zsh plugin manager after all...
 
-TLDR? Click here to [skip to the code](#tada-the-code).
+TLDR? Click here to [skip to the code](#gemini-the-humble-plugin-load-function).
 
 ## :electric_plug: Zsh Plugin Managers
 
@@ -12,36 +12,41 @@ There are an embarassingly large number of Zsh plugin managers out there. Many o
 are abandonware, are no longer actively developed, are brand new without many users, or
 don't have much reason to even exist other than as a novelty.
 
-Here's a list of many (but probably not all) of them from [awesome-zsh-plugins]:
+Here's a list of many (but certainly not all) of them from [awesome-zsh-plugins]:
 
 | Zsh Plugin Manager | Performance        | Current state                                   |
 |--------------------|--------------------|-------------------------------------------------|
 | [antibody]         | :rabbit2: fast     | :imp: Maintenance mode, no new features         |
 | [antigen]          | :turtle: slow      | :imp: Maintenance mode, no new features         |
-| [mzpm]             | :question: unknown | :hatching_chick: New                            |
 | [pz]               | :rabbit2: fast     | :white_check_mark: Active                       |
 | [sheldon]          | :question: unknown | :white_check_mark: Active                       |
-| [tzpm]             | :question: unknown | :hatching_chick: New                            |
-| [uz]               | :question: unknown | :hatching_chick: New                            |
 | [zcomet]           | :rabbit2: fast     | :white_check_mark: Active                       |
-| [zed]              | :question: unknown | :hatching_chick: New                            |
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
-| [zgen]             | :rabbit2: fast     | :imp: No recent commits                         |
+| [zgen]             | :rabbit2: fast     | :skull_and_crossbones: Abandonware              |
 | [zgenom]           | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zinit-continuum]  | :rabbit2: fast     | :white_check_mark: Active [\*][#1]              |
 | [zinit]            | :rabbit2: fast     | :cursing_face: Author deleted project           |
-| [zit]              | :question: unknown | :imp: No recent commits                         |
+| [zit]              | :question: unknown | :imp: Few/no recent commits                     |
 | [znap]             | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zplug]            | :turtle: slow      | :skull_and_crossbones: Abandonware              |
 | [zplugin][zinit]   | :rabbit2: fast     | :cursing_face: Renamed to zinit, author deleted |
 | [zpm]              | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zr]               | :question: unknown | :imp: No recent commits                         |
 
-Full disclosure, I'm even the author of one of these - [pz].
+_Full disclosure, I'm the author of one of these - [pz]._
+
+There's new ones popping up all the time too:
+
+| Zsh Plugin Manager | Performance        | Current state        |
+|--------------------|--------------------|----------------------|
+| [mzpm]             | :question: unknown | :hatching_chick: New |
+| [tzpm]             | :question: unknown | :hatching_chick: New |
+| [uz]               | :question: unknown | :hatching_chick: New |
+| [zed]              | :question: unknown | :hatching_chick: New |
 
 ### :firecracker: The catalyst
 
-A little while ago, the plugin manager I was using, [antibody], was deprecated.
+I January 2021, the plugin manager I was using, [antibody], was deprecated.
 The author even [went so far as to say](https://github.com/getantibody/antibody/tree/2ca7616ae78754c0ab70790229f5d19be42206e9):
 
 > Most of the other plugin managers catch up on performance, thus keeping this \[antibody] does not make sense anymore.
@@ -49,20 +54,18 @@ The author even [went so far as to say](https://github.com/getantibody/antibody/
 Prior to that, I used [zgen], which also stopped being actively developed and the
 [developer](https://github.com/tarjoilija) seems to have disappeared.
 
-Even more recently, a relatively well known and popular Zsh plugin manager, zinit, was
+In November 2021, a relatively well known and popular Zsh plugin manager, zinit, was
 removed from GitHub entirely and without warning. In fact, the author
 [deleted almost his entire body of work][zdharma-debacle].
 
 Zinit was really popular because it was super fast, and the author promoted his projects
-in multiple venues for many years. However, [zinit was complicated][zinit-docs-reddit],
-and despite having prolific documentation, it was difficult to understand. And, it
-drove other Zsh plugin managers to focus on performance, which closed the gap.
+in multiple venues for many years.
 
 (_Quick shoutout to the folks running [zdharma-continuum] though - great work keeping
 Zinit alive!_)
 
-With the instablility in the Zsh plugin space, it got me wondering why I even use a
-plugin manager at all.
+With the instablility in the Zsh plugin manager space, it got me wondering why I even
+use a plugin manager at all.
 
 ### :bulb: The simple idea
 
@@ -71,14 +74,14 @@ kept breaking, so like many others before me, I decided to write my own - [pz].
 
 When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
 that was fast, functional, and easy to understand - which was everything I loved about
-[zgen]. While [pz] is a great project, I kept wondering if I could cut further from
-a single file to a single function and do away with plugin management utilities
+[zgen]. While [pz] is still a great project, I kept wondering if I could cut further
+from a single file to a single function and do away with plugin management utilities
 alltogether.
 
 Thus was born... **zsh_unplugged**.
 
-This isn't a plugin manager - it's a way to show you how to manage your plugins without
-one using small, easy to understand snippets of Zsh. All this with the hope that
+This isn't a plugin manager - it's a way to show you how to manage your own plugins
+without one using small, easy to understand snippets of Zsh. All this with the hope that
 perhaps, once-and-for-all, we can do away with the idea that we even need to use a Zsh
 plugin manager.
 
