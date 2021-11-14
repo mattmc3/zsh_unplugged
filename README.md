@@ -130,7 +130,9 @@ function plugin-load () {
   # clone if the plugin isn't there already
   if [[ ! -d $plugindir ]]; then
     command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
-    [[ $? -eq 0 ]] || { >&2 echo "plugin-load: git clone failed; $giturl" && return 1 }
+    if [[ $? -ne 0 ]]; then
+      echo "plugin-load: git clone failed for: $giturl" >&2 && return 1
+    fi
   fi
 
   # symlink an init.zsh if there isn't one so the plugin is easy to source
@@ -147,7 +149,9 @@ function plugin-load () {
       $plugindir/*.zsh-theme(N)
       $plugindir/*.sh(N)
     )
-    [[ ${#initfiles[@]} -gt 0 ]] || { >&2 echo "plugin-load: no plugin init file found" && return 1 }
+    if [[ ${#initfiles[@]} -eq 0 ]]; then
+      echo "plugin-load: no plugin init file found" >&2 && return 1
+    fi
     command ln -s ${initfiles[1]} $plugindir/init.zsh
   fi
 
@@ -285,11 +289,12 @@ plugin manager free with Zsh frameworks:
 
 #### Oh-My-Zsh
 
-If you are using [Oh-My-Zsh][ohmyzsh], the way to go without a plugin manager would be to utilize
-the `$ZSH_CUSTOM` path.
+If you are using [Oh-My-Zsh][ohmyzsh], the way to go without a plugin manager would be
+to utilize the `$ZSH_CUSTOM` path.
 
 
-_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not be true._
+_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not
+be true._
 
 ```zsh
 external_plugins=(
@@ -305,20 +310,21 @@ done
 
 # add your external plugins to your OMZ plugins list
 plugins=(
-   ...
-   zsh-hist
-   zsh-autosuggestions
-   ...
-   zsh-syntax-highlighting
+  ...
+  zsh-hist
+  zsh-autosuggestions
+  ...
+  zsh-syntax-highlighting
 )
 ```
 
 #### Prezto
 
-If you are using [Prezto][prezto], the way to go without a plugin manager would be to utilize
-the `$ZPREZTODIR/contrib` path.
+If you are using [Prezto][prezto], the way to go without a plugin manager would be to
+utilize the `$ZPREZTODIR/contrib` path.
 
-_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not be true._
+_Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not
+be true._
 
 ```zsh
 external_plugins=(
@@ -335,11 +341,11 @@ done
 
 # add plugins to your Prezto plugins list in .zpreztorc
 zstyle ':prezto:load' pmodule \
-   ... \
-   z \
-   zsh-hist \
-   ... \
-   zsh-syntax-highlighting \
+  ... \
+  z \
+  zsh-hist \
+  ... \
+  zsh-syntax-highlighting \
 ```
 
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
