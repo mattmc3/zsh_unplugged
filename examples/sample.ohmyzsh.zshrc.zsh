@@ -1,41 +1,20 @@
 # ...standard oh-my-zsh boilerplate goes here...
 
-# use a clone-only function
-function plugin-clone () {
-  local giturl="$1"
-  local plugin_name=${${giturl##*/}%.git}
-  local plugindir="$ZSH_CUSTOM/plugins/$plugin_name"
-
-  # clone if the plugin isn't there already
-  if [[ ! -d $plugindir ]]; then
-    command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
-    if [[ $? -ne 0 ]]; then
-      echo "plugin-clone: git clone failed for: $giturl" >&2 && return 1
+# use a clone-only function because oh-my-zsh handles the load
+function omz-plugin-clone() {
+  # clone plugin if not found
+  local repo plugin_dir initfile initfiles
+  for repo in $@; do
+    plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
+    initfile=$plugin_dir/${repo:t}.plugin.zsh
+    [[ -d $plugin_dir ]] \
+      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    if [[ ! -e $initfile ]]; then
+      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
+      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'" && continue }
+      ln -s "${initfiles[1]}" "$initfile"
     fi
-  fi
-
-  # symlink a {plugin-name}.plugin.zsh file if there isn't one so OMZ knows
-  # how to load this plugin
-  if [[ ! -f $plugindir/$plugin_name.plugin.zsh ]] &&
-     [[ ! -f $plugindir/$plugin_name.zsh-theme ]]; then
-    local initfiles=(
-      # look for specific files first
-      $plugindir/$plugin_name.zsh(N)
-      $plugindir/$plugin_name(N)
-      # then do more aggressive globbing
-      $plugindir/*.plugin.zsh(N)
-      $plugindir/*.zsh-theme(N)
-      $plugindir/*.zsh(N)
-      $plugindir/*.sh(N)
-    )
-    if [[ ${#initfiles[@]} -eq 0 ]]; then
-      echo "plugin-clone: no plugin init file found" >&2 && return 1
-    fi
-    command ln -s ${initfiles[1]} $plugindir/$plugin_name.plugin.zsh
-  fi
-
-  # no need to source the plugin because OMZ will do that via
-  # its plugins=(...) list
+  done
 }
 
 # clone your external plugins if needed
@@ -44,20 +23,16 @@ external_plugins=(
   marlonrichert/zsh-hist
   zsh-users/zsh-syntax-highlighting
 )
-for repo in $external_plugins; do
-  if [[ ! -d $ZSH_CUSTOM/plugins/${repo:t} ]]; then
-    git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
-  fi
-done
+omz-plugin-clone $external_plugins
 
-# add your external plugins to your OMZ plugins list
+# set your normal oh-my-zsh plugins
 plugins=(
-  # OMZ plugins
-  # git, etc...
-  # external plugins
-  zsh-hist
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  git
+  magic-enter
 )
 
+# now add your external plugins to your OMZ plugins list
+plugins+=${external_plugins:t}
+
+# then source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
