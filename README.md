@@ -72,24 +72,24 @@ time and kept breaking, so like many others before me, I decided to write my own
 When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
 that was fast, functional, and easy to understand - which was everything I loved about
 [zgen]. While [pz] is still a great project, I kept wondering if I could cut further
-from a single file to a single function and do away with plugin management utilities
+from a single file to a single _function_ and do away with plugin management utilities
 alltogether.
 
 Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to show you how to manage your own plugins
 using small, easy to understand snippets of Zsh. All this with the hope that perhaps,
-once-and-for-all, we can do away with the idea that we even need to use a Zsh
-plugin manager project and just do it ourselves.
+once-and-for-all, we can do away with the idea that we even need to use bloated Zsh
+plugin manager projects and just simply do it ourselves.
 
-You can simply grab a ~40 line function and you have everything you need to manage your
+You can simply grab a ~20 line function and you have everything you need to manage your
 own plugins from here on out.
 
 ## :tada: The code
 
 ### :gear: The bare metal way
 
-If you don't want to use anything resemblineg a plugin manager at all, you can simply
+If you don't want to use anything resemblineg a plugin manager at all, you could simply
 clone and source plugins yourself manually:
 
 ```zsh
@@ -111,8 +111,8 @@ source $ZPLUGINDIR/z/z.sh
 ```
 
 This can get pretty cumbersome and tricky to maintain. You need to figure out each
-plugin's init file, and sometimes adding a plugin and its functions dir to your `fpath`
-is required. While this method works, there's another way...
+plugin's init file, and sometimes adding a plugin to your `fpath` is required. While
+this method works, there's another way...
 
 ### :jigsaw: The humble `plugin-load` function
 
@@ -121,34 +121,32 @@ simple function wrapper as the basis for everything you need to manage your own 
 plugins:
 
 ```zsh
+# clone a plugin, identify its init file, source it (with zsh-defer if available)
+# and add it to your fpath
 function plugin-load() {
-  # clone a plugin, identify the plugin's init file, source it (with defer if possible),
-  # and add it to your fpath
   local repo plugin_name plugin_dir initfile initfiles
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
   for repo in $@; do
     plugin_name=${repo:t}
     plugin_dir=$ZPLUGINDIR/$plugin_name
     initfile=$plugin_dir/$plugin_name.plugin.zsh
-    [[ -d $plugin_dir ]] \
-      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    if [[ ! -d $plugin_dir ]]; then
+      echo "Cloning $repo"
+      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    fi
     if [[ ! -e $initfile ]]; then
       initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
       [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
       ln -s "${initfiles[1]}" "$initfile"
     fi
     fpath+=$plugin_dir
-    if (( $+functions[zsh-defer] )); then
-      zsh-defer source $initfile
-    else
-      source $initfile
-    fi
+    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
 ```
 
-That's it. ~25 lines of code and you have a simple, robust Zsh plugin management
-alternative that is likely faster than anything else out there.
+That's it. ~20 lines of code and you have a simple, robust Zsh plugin management
+alternative that is likely faster than most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then symlink an
@@ -156,10 +154,12 @@ plugin init file if one doesn't exist, which allows us to get the performance ad
 of static sourcing rather than searching for which plugin files to load every time we
 open a new terminal.
 
-Then, the plugin is sourced and added to `fpath`. Also, you get some hypersonic load
-speed magic if you choose to use the [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer)
-plugin. Essentially, if you add this plugin, everything after it loads is defered,
-meaning you get to your prompt at hypersonic speed!
+Then, the plugin is sourced and added to `fpath`.
+
+You can also get hypersonic load speed magic :rocket: if you choose to use the
+[romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin. Essentially, if you
+add this plugin, everything you load afterwards will use zsh-defer, meaning you get
+speeds similar to zinit's turbo mode.
 
 ### :question: How do I actually load (source) my plugins?
 
@@ -171,11 +171,11 @@ After grabbing the `plugin-load` function, add a snippet like the following to y
 # function plugin-load () { ... }
 
 # set where we should store Zsh plugins
-ZPLUGINDIR=$HOME/.zsh/plugins
+ZPLUGINDIR=~/.config/zsh/plugins
 
 # add your plugins to this list
 plugins=(
-  # prompts
+  # prompt
   sindresorhus/pure
 
   # use zsh-defer magic to load the remaining plugins at hypersonic speed!
@@ -184,6 +184,7 @@ plugins=(
   # core plugins
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-history-substring-search
+  olets/zsh-abbr
 
   # user plugins
   rupa/z
@@ -203,7 +204,7 @@ plugin-load $plugins
 Updating your plugins is as simple as deleting the $ZPLUGINDIR and reloading Zsh.
 
 ```zsh
-ZPLUGINDIR=$HOME/.zsh/plugins
+ZPLUGINDIR=~/.config/zsh/plugins
 rm -rfi $ZPLUGINDIR
 zsh
 ```
@@ -213,7 +214,7 @@ can run `git pull` yourself, or even use a simple `plugin-update` function:
 
 ```zsh
 function plugin-update () {
-  ZPLUGINDIR="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
+  ZPLUGINDIR=${ZPLUGINDIR:~/.config/zsh/plugins}
   for d in $ZPLUGINDIR/*/.git(/); do
     echo "Updating ${d:h:t}..."
     command git -C "${d:h}" pull --ff --recurse-submodules --depth 1 --rebase --autostash
@@ -247,6 +248,19 @@ altogether, feel free to run `rm`:
 # remove the fast-syntax-highlighting plugin
 rm -rfi $ZPLUGINDIR/fast-syntax-highlighting
 ```
+
+### :question: How do I load my plugins with hypersonic speed :rocket:?
+
+You can also get hypersonic load speed magic :rocket: if you choose to use the
+[romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin. Essentially, if you
+add `romkatv/zsh-defer` to your plugins list, everything you load afterwards will use
+zsh-defer, meaning you'll get speeds similar to zinit's turbo mode.
+
+A warning - be careful and verify which plugins work with zsh-defer. If you get weird
+behavior, from a plugin, load it before zsh-defer. In my testing, the [pure] prompt
+was one I needed to load prior to zsh-defer, but most everything else works incredibly
+well. Notably, if you like the [zsh-abbr] plugin for fish-like abbreviations in Zsh,
+using zsh-defer [will boost its performance greatly](https://github.com/olets/zsh-abbr/issues/52).
 
 ### :question: What if I want my plugins to be even faster?
 
@@ -361,3 +375,5 @@ zstyle ':prezto:load' pmodule \
 [#1]: https://github.com/mattmc3/zsh_unplugged/issues/1
 [ohmyzsh]: https://github.com/ohmyzsh/ohmyzsh
 [prezto]: https://github.com/sorin-ionescu/prezto
+[pure]: https://github.com/sindresorhus/pure
+[zsh-abbr]: https://github.com/olets/zsh-abbr
