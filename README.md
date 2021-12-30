@@ -271,10 +271,10 @@ of your Zsh, you can use this function
 
 ```zsh
 function plugin-compile () {
-  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
+  ZPLUGINDIR=${ZPLUGINDIR:-~/.config/zsh/plugins}
   autoload -U zrecompile
   local f
-  for f in $plugindir/**/*.zsh{,-theme}(N); do
+  for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do
     zrecompile -pq "$f"
   done
 }
