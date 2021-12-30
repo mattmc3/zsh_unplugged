@@ -199,6 +199,44 @@ plugins=(
 plugin-load $plugins
 ```
 
+### :question: Can I use this repo as a plugin?
+
+Sure, sort of. You obviously have to clone it yourself first, but it's possible.
+Do something like this in your .zshrc:
+
+```zsh
+# where do you want to store your plugins?
+ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+
+# get zsh_unplugged as a plugin
+if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
+  git clone https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
+fi
+source $ZPLUGINDIR/zsh_unplugged/zunplugged.zsh
+
+# make list of the other Zsh plugins you use
+plugins=(
+  # load these first
+  sindresorhus/pure
+  romkatv/zsh-defer
+
+  # general plugins
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-history-substring-search
+  mattmc3/zman
+  zshzoo/magic-enter
+  rupa/z
+  rummik/zsh-tailf
+  peterhurford/up.zsh
+
+  # load these last
+  zdharma-continuum/fast-syntax-highlighting
+)
+
+# load all your plugins
+plugin-load $plugins
+```
+
 ### :question: How do I update my plugins?
 
 Updating your plugins is as simple as deleting the $ZPLUGINDIR and reloading Zsh.
