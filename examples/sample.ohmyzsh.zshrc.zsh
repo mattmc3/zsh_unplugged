@@ -5,10 +5,11 @@ ZSH_CUSTOM=${ZSH_CUSTOM:-$ZSH/custom}
 # use a clone-only function because oh-my-zsh handles the load
 function omz-plugin-clone() {
   # clone plugin if not found
-  local repo plugin_dir initfile initfiles
+  local repo plugin_name plugin_dir initfile initfiles
   for repo in $@; do
-    plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
-    initfile=$plugin_dir/${repo:t}.plugin.zsh
+    plugin_name=${repo:t}
+    plugin_dir=$ZSH_CUSTOM/plugins/$plugin_name
+    initfile=$plugin_dir/$plugin_name.plugin.zsh
     [[ -d $plugin_dir ]] \
       || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
     if [[ ! -e $initfile ]]; then
