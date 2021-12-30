@@ -110,7 +110,7 @@ Results:
     9935 total
 ```
 
-\**Note: SLOC is not intended as an indicator of much here beyond a rough comparison of effort, maintainabinity, and complexity*
+\**Note: SLOC is not intended as an indicator of much here beyond a rough comparison of effort, maintainability, and complexity*
 
 ## :tada: The code
 
