@@ -200,7 +200,7 @@ plugin-load $plugins
 
 ### :question: Can I use this repo as a plugin?
 
-Sure, sort of. You obviously have to clone it yourself first, but it's possible.
+Sure, sort of. You have to clone it manually first, but it's possible.
 Do something like this in your .zshrc:
 
 ```zsh
@@ -219,14 +219,9 @@ plugins=(
   sindresorhus/pure
   romkatv/zsh-defer
 
-  # general plugins
+  # other plugins
   zsh-users/zsh-autosuggestions
-  zsh-users/zsh-history-substring-search
-  mattmc3/zman
-  zshzoo/magic-enter
-  rupa/z
-  rummik/zsh-tailf
-  peterhurford/up.zsh
+  # ...
 
   # load these last
   zdharma-continuum/fast-syntax-highlighting
@@ -288,7 +283,7 @@ rm -rfi $ZPLUGINDIR/fast-syntax-highlighting
 
 ### :question: How do I load my plugins with hypersonic speed :rocket:?
 
-You can also get hypersonic load speed magic :rocket: if you choose to use the
+You can get turbocharged-hypersonic-load-speed-magic if you choose to use the
 [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin. Essentially, if you
 add `romkatv/zsh-defer` to your plugins list, everything you load afterwards will use
 zsh-defer, meaning you'll get speeds similar to zinit's turbo mode.
