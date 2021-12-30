@@ -256,11 +256,14 @@ You can also get hypersonic load speed magic :rocket: if you choose to use the
 add `romkatv/zsh-defer` to your plugins list, everything you load afterwards will use
 zsh-defer, meaning you'll get speeds similar to zinit's turbo mode.
 
-A warning - be careful and verify which plugins work with zsh-defer. If you get weird
-behavior, from a plugin, load it before zsh-defer. In my testing, the [pure] prompt
-was one I needed to load prior to zsh-defer, but most everything else works incredibly
-well. Notably, if you like the [zsh-abbr] plugin for fish-like abbreviations in Zsh,
-using zsh-defer [will boost its performance greatly](https://github.com/olets/zsh-abbr/issues/52).
+Notably, if you like the [zsh-abbr] plugin for fish-like abbreviations in Zsh,
+using zsh-defer [will boost performance greatly](https://github.com/olets/zsh-abbr/issues/52).
+
+:warning: Warning - be careful and verify which plugins work well with zsh-defer. If you get
+weird behavior from a plugin, then load it before zsh-defer. In my extensive testing, the
+[pure] prompt was the only one I needed to load prior to zsh-defer, and everything else worked
+as expected. If you find a plugin that doesn't work well with zsh-defer, feel free to open an
+issue and I'll note it here.
 
 ### :question: What if I want my plugins to be even faster?
 
