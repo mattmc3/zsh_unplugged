@@ -1,45 +1,29 @@
-# unplugged: https://github.com/mattmc3/zsh_unplugged
+# zunplugged: https://github.com/mattmc3/zsh_unplugged
+# a simple, ultra-fast plugin handler
 
-# clone a plugin, find an init.zsh, source it, and add it to your fpath
-function plugin-load () {
-  local giturl="$1"
-  local plugin_name=${${giturl##*/}%.git}
-  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
-
-  # clone if the plugin isn't there already
-  if [[ ! -d $plugindir ]]; then
-    command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
-    if [[ $? -ne 0 ]]; then
-      echo "plugin-load: git clone failed for: $giturl" >&2 && return 1
+function plugin-load() {
+  # clone a plugin, identify the plugin's init file, source it (with defer if possible),
+  # and add it to your fpath
+  local repo plugin_name plugin_dir initfile initfiles
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  for repo in $@; do
+    plugin_name=${repo:t}
+    plugin_dir=$ZPLUGINDIR/$plugin_name
+    initfile=$plugin_dir/$plugin_name.plugin.zsh
+    [[ -d $plugin_dir ]] \
+      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    if [[ ! -e $initfile ]]; then
+      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
+      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
+      ln -s "${initfiles[1]}" "$initfile"
     fi
-  fi
-
-  # symlink an init.zsh if there isn't one so the plugin is easy to source
-  if [[ ! -f $plugindir/init.zsh ]]; then
-    local initfiles=(
-      # look for specific files first
-      $plugindir/$plugin_name.plugin.zsh(N)
-      $plugindir/$plugin_name.zsh(N)
-      $plugindir/$plugin_name(N)
-      $plugindir/$plugin_name.zsh-theme(N)
-      # then do more aggressive globbing
-      $plugindir/*.plugin.zsh(N)
-      $plugindir/*.zsh(N)
-      $plugindir/*.zsh-theme(N)
-      $plugindir/*.sh(N)
-    )
-    if [[ ${#initfiles[@]} -eq 0 ]]; then
-      echo "plugin-load: no plugin init file found" >&2 && return 1
+    fpath+=$plugin_dir
+    if (( $+functions[zsh-defer] )); then
+      zsh-defer source $initfile
+    else
+      source $initfile
     fi
-    command ln -s ${initfiles[1]} $plugindir/init.zsh
-  fi
-
-  # source the plugin
-  source $plugindir/init.zsh
-
-  # modify fpath
-  fpath+=$plugindir
-  [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
+  done
 }
 
 # if you want to compile your plugins you may see performance gains

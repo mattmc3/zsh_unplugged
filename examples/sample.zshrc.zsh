@@ -1,34 +1,59 @@
-# where should we store your Zsh plugins?
-ZPLUGINDIR=$HOME/.zsh/plugins
+# where should we download your Zsh plugins?
+ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
 
-# if you want to use zsh_unplugged, you can either copy/paste the plugin-load function
-# here, source a Zsh file with the function, or just clone the repo
-if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
-  git clone https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
-fi
-source $ZPLUGINDIR/zsh_unplugged/unplugged.zsh
+# declare a simple plugin-load function
+function plugin-load() {
+  # clone and source plugins, using zsh-defer if it exists
+  local repo plugin_name plugin_dir initfile initfiles
+  for repo in $@; do
+    plugin_name=${repo:t}
+    plugin_dir=$ZPLUGINDIR/$plugin_name
+    initfile=$plugin_dir/$plugin_name.plugin.zsh
+    [[ -d $plugin_dir ]] \
+      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    if [[ ! -e $initfile ]]; then
+      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
+      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
+      ln -s "${initfiles[1]}" "$initfile"
+    fi
+    if (( $+functions[zsh-defer] )); then
+      zsh-defer source $initfile
+    else
+      source $initfile
+    fi
+  done
+}
 
-# add your plugins to this list
+# make a github repo plugins list
 plugins=(
-  # core plugins
-  mafredri/zsh-async
+  # load these first
+  zshzoo/zshrc.d
+  romkatv/zsh-defer
+
+  # general plugins
+  zshzoo/setopts
+  zshzoo/history
+  zshzoo/keybindings
+  zshzoo/zstyle-completions
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-history-substring-search
-
-  # user plugins
+  mattmc3/zman
+  olets/zsh-abbr
+  zshzoo/copier
+  zshzoo/macos
+  zshzoo/prj
+  zshzoo/magic-enter
+  zshzoo/zfishcmds
+  zshzoo/termtitle
   rupa/z
-  peterhurford/up.zsh
   rummik/zsh-tailf
+  peterhurford/up.zsh
 
   # prompts
   sindresorhus/pure
 
-  # load this one last
-  zsh-users/zsh-syntax-highlighting
+  # load these last
+  zshzoo/compinit
+  zdharma-continuum/fast-syntax-highlighting
 )
-
-# clone, source, and add to fpath
-for repo in $plugins; do
-    plugin-load https://github.com/${repo}.git
-done
-unset repo
+plugin-load $plugins

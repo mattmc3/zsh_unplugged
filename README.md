@@ -121,51 +121,34 @@ simple function wrapper as the basis for everything you need to manage your own 
 plugins:
 
 ```zsh
-# clone a plugin, find an init.zsh, source it, and add it to your fpath
-function plugin-load () {
-  local giturl="$1"
-  local plugin_name=${${giturl##*/}%.git}
-  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}/$plugin_name"
-
-  # clone if the plugin isn't there already
-  if [[ ! -d $plugindir ]]; then
-    command git clone --depth 1 --recursive --shallow-submodules $giturl $plugindir
-    if [[ $? -ne 0 ]]; then
-      echo "plugin-load: git clone failed for: $giturl" >&2 && return 1
+function plugin-load() {
+  # clone a plugin, identify the plugin's init file, source it (with defer if possible),
+  # and add it to your fpath
+  local repo plugin_name plugin_dir initfile initfiles
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  for repo in $@; do
+    plugin_name=${repo:t}
+    plugin_dir=$ZPLUGINDIR/$plugin_name
+    initfile=$plugin_dir/$plugin_name.plugin.zsh
+    [[ -d $plugin_dir ]] \
+      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    if [[ ! -e $initfile ]]; then
+      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
+      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
+      ln -s "${initfiles[1]}" "$initfile"
     fi
-  fi
-
-  # symlink an init.zsh if there isn't one so the plugin is easy to source
-  if [[ ! -f $plugindir/init.zsh ]]; then
-    local initfiles=(
-      # look for specific files first
-      $plugindir/$plugin_name.plugin.zsh(N)
-      $plugindir/$plugin_name.zsh(N)
-      $plugindir/$plugin_name(N)
-      $plugindir/$plugin_name.zsh-theme(N)
-      # then do more aggressive globbing
-      $plugindir/*.plugin.zsh(N)
-      $plugindir/*.zsh(N)
-      $plugindir/*.zsh-theme(N)
-      $plugindir/*.sh(N)
-    )
-    if [[ ${#initfiles[@]} -eq 0 ]]; then
-      echo "plugin-load: no plugin init file found" >&2 && return 1
+    fpath+=$plugin_dir
+    if (( $+functions[zsh-defer] )); then
+      zsh-defer source $initfile
+    else
+      source $initfile
     fi
-    command ln -s ${initfiles[1]} $plugindir/init.zsh
-  fi
-
-  # source the plugin
-  source $plugindir/init.zsh
-
-  # modify fpath
-  fpath+=$plugindir
-  [[ -d $plugindir/functions ]] && fpath+=$plugindir/functions
+  done
 }
 ```
 
-That's it. ~40 lines of code and you have a simple, robust Zsh plugin management
-alternative.
+That's it. ~25 lines of code and you have a simple, robust Zsh plugin management
+alternative that is likely faster than anything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then symlink an
@@ -188,8 +171,13 @@ ZPLUGINDIR=$HOME/.zsh/plugins
 
 # add your plugins to this list
 plugins=(
+  # prompts
+  sindresorhus/pure
+
+  # use zsh-defer magic to load the remaining plugins at hypersonic speed!
+  romkatv/zsh-defer
+
   # core plugins
-  mafredri/zsh-async
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-history-substring-search
 
@@ -198,18 +186,12 @@ plugins=(
   peterhurford/up.zsh
   rummik/zsh-tailf
 
-  # prompts
-  sindresorhus/pure
-
   # load this one last
   zsh-users/zsh-syntax-highlighting
 )
 
 # load your plugins (clone, source, and add to fpath)
-for repo in $plugins; do
-  plugin-load https://github.com/${repo}.git
-done
-unset repo
+plugin-load $plugins
 ```
 
 ### :question: How do I update my plugins?
@@ -227,8 +209,8 @@ can run `git pull` yourself, or even use a simple `plugin-update` function:
 
 ```zsh
 function plugin-update () {
-  local plugindir="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
-  for d in $plugindir/*/.git(/); do
+  ZPLUGINDIR="${ZPLUGINDIR:-$HOME/.zsh/plugins}"
+  for d in $ZPLUGINDIR/*/.git(/); do
     echo "Updating ${d:h:t}..."
     command git -C "${d:h}" pull --ff --recurse-submodules --depth 1 --rebase --autostash
   done
