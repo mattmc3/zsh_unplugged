@@ -330,7 +330,7 @@ be true._
 external_plugins=(
   rupa/z
   marlonrichert/zsh-hist
-  zsh-users/zsh-syntax-highlighting
+  mattmc3/zman
 )
 for repo in $external_plugins; do
   if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
@@ -345,7 +345,7 @@ zstyle ':prezto:load' pmodule \
   z \
   zsh-hist \
   ... \
-  zsh-syntax-highlighting
+  zman
 ```
 
 [zinit-docs-reddit]: https://www.reddit.com/r/zsh/comments/mur6eu/anyone_interested_in_zinit_documentation/
