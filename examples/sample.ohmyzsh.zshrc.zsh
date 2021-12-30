@@ -34,7 +34,7 @@ plugins=(
 )
 
 # now add your external plugins to your OMZ plugins list
-plugins+=${external_plugins:t}
+plugins+=(${external_plugins:t})
 
 # then source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
