@@ -87,10 +87,14 @@ own plugins from here on out. By way of contrast, I ran a rough line count of zi
 codebase which comes out to nearly a whopping ~10,000 lines.
 
 ```zsh
-% zinit_tmpdir=$(mktemp -d)
-% git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
-% wc -l $zinit_tmpdir/**/*.zsh
-% [[ -d $zinit_tmpdir ]] && rm -rf $zinit_tmpdir
+zinit_tmpdir=$(mktemp -d)
+git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
+wc -l $zinit_tmpdir/**/*.zsh
+[[ -d $zinit_tmpdir ]] && rm -rf $zinit_tmpdir
+```
+
+Results:
+```
       18 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/init.zsh
       61 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/utils.zsh
      186 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/git-process-output.zsh
