@@ -156,10 +156,9 @@ open a new terminal.
 
 Then, the plugin is sourced and added to `fpath`.
 
-You can also get hypersonic load speed magic :rocket: if you choose to use the
-[romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin. Essentially, if you
-add this plugin, everything you load afterwards will use zsh-defer, meaning you get
-speeds similar to zinit's turbo mode.
+You can even get turbocharged-hypersonic-load-speed-magic :rocket: if you choose to use
+the [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin.
+[See how here](#question-how-do-i-load-my-plugins-with-hypersonic-speed-rocket).
 
 ### :question: How do I actually load (source) my plugins?
 
