@@ -2,31 +2,17 @@
 ZSH=${ZSH:-~/.oh-my-zsh}
 ZSH_CUSTOM=${ZSH_CUSTOM:-$ZSH/custom}
 
-# use a clone-only function because oh-my-zsh handles the load
-function omz-plugin-clone() {
-  # clone plugin if not found
-  local repo plugin_name plugin_dir initfile initfiles
-  for repo in $@; do
-    plugin_name=${repo:t}
-    plugin_dir=$ZSH_CUSTOM/plugins/$plugin_name
-    initfile=$plugin_dir/$plugin_name.plugin.zsh
-    [[ -d $plugin_dir ]] \
-      || git clone --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
-    if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
-      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'" && continue }
-      ln -s "${initfiles[1]}" "$initfile"
-    fi
-  done
-}
-
 # clone your external plugins if needed
 external_plugins=(
   zsh-users/zsh-autosuggestions
   marlonrichert/zsh-hist
   zsh-users/zsh-syntax-highlighting
 )
-omz-plugin-clone $external_plugins
+for repo in $external_plugins; do
+  if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
+    git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
+  fi
+done
 
 # set your normal oh-my-zsh plugins
 plugins=(
