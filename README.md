@@ -152,10 +152,14 @@ alternative that is likely faster than anything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then symlink an
-"init.zsh", which allows us to get the performance advantage of static sourcing rather
-than searching for which plugin files to load every time we open a new terminal.
+plugin init file if one doesn't exist, which allows us to get the performance advantage
+of static sourcing rather than searching for which plugin files to load every time we
+open a new terminal.
 
-Then, the init.zsh is sourced and the plugin is added to the `fpath`.
+Then, the plugin is sourced and added to `fpath`. Also, you get some hypersonic load
+speed magic if you choose to use the [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer)
+plugin. Essentially, if you add this plugin, everything after it loads is defered,
+meaning you get to your prompt at hypersonic speed!
 
 ### :question: How do I actually load (source) my plugins?
 
