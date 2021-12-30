@@ -83,7 +83,30 @@ once-and-for-all, we can do away with the idea that we even need to use bloated 
 plugin manager projects and just simply do it ourselves.
 
 You can simply grab a ~20 line function and you have everything you need to manage your
-own plugins from here on out.
+own plugins from here on out. By way of contrast, I ran a rough line count of zinit's
+codebase which comes out to nearly a whopping ~10,000 lines.
+
+```zsh
+% zinit_tmpdir=$(mktemp -d)
+% git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
+% wc -l $zinit_tmpdir/**/*.zsh
+% [[ -d $zinit_tmpdir ]] && rm -rf $zinit_tmpdir
+      18 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/init.zsh
+      61 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/utils.zsh
+     186 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/git-process-output.zsh
+      51 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/rpm2cpio.zsh
+      19 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/single-line.zsh
+      23 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/tests/setup.zsh
+      12 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/tests/teardown.zsh
+     147 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-additional.zsh
+    3486 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-autoload.zsh
+    2389 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-install.zsh
+     404 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-side.zsh
+    3139 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit.zsh
+    9935 total
+```
+
+\**Note: SLOC is not intended as an indicator of much here beyond a rough comparison of effort, maintainabinity, and complexity*
 
 ## :tada: The code
 
