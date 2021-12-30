@@ -1,4 +1,6 @@
 # ...standard oh-my-zsh boilerplate goes here...
+ZSH=${ZSH:-~/.oh-my-zsh}
+ZSH_CUSTOM=${ZSH_CUSTOM:-$ZSH/custom}
 
 # use a clone-only function because oh-my-zsh handles the load
 function omz-plugin-clone() {
