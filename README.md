@@ -181,8 +181,8 @@ That's it. ~20 lines of code and you have a simple, robust Zsh plugin management
 alternative that is likely faster than most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
-repo for an appropriate .zsh file to use as an init script. We then symlink an
-plugin init file if one doesn't exist, which allows us to get the performance advantage
+repo for an appropriate .zsh file to use as an init script. We then find and symlink the
+plugin's init file if necessary, which allows us to get the performance advantage
 of static sourcing rather than searching for which plugin files to load every time we
 open a new terminal.
 
