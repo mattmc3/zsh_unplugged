@@ -2,7 +2,11 @@
 
 🤔 perhaps you don't need a Zsh plugin manager after all...
 
-TLDR? Click here to [skip to the code](#jigsaw-the-humble-plugin-load-function).
+TLDR; You don't need a big bloated plugin manager for your Zsh plugins. A simple
+~20 line function may be all you need. And, it has hypersonic-turbo-speed
+performance to boot!
+
+Click here to [skip to the code](#jigsaw-the-humble-plugin-load-function).
 
 ## :electric_plug: Zsh Plugin Managers
 
