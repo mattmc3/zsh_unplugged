@@ -1,0 +1,4 @@
+tests/.ztap/
+tests/.plugins/
+*.zwc
+*.old
