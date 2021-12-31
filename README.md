@@ -332,7 +332,7 @@ confident you know what you're doing and want to eek every last bit of performan
 of your Zsh, you can use this function
 
 ```zsh
-function plugin-compile () {
+function plugin-compile() {
   ZPLUGINDIR=${ZPLUGINDIR:-$HOME/.config/zsh/plugins}
   autoload -U zrecompile
   local f

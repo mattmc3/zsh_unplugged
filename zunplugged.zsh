@@ -25,7 +25,7 @@ function plugin-load() {
 }
 
 # if you want to compile your plugins you may see performance gains
-function plugin-compile () {
+function plugin-compile() {
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   autoload -U zrecompile
   local f
