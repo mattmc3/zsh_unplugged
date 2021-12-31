@@ -50,23 +50,24 @@ There's new ones popping up all the time too:
 
 ### :firecracker: The catalyst
 
-I January 2021, the plugin manager I was using, [antibody], was deprecated.
+In January 2021, the plugin manager I was using, [antibody], was deprecated.
 The author even [went so far as to say](https://github.com/getantibody/antibody/tree/2ca7616ae78754c0ab70790229f5d19be42206e9):
 
 > Most of the other plugin managers catch up on performance, thus keeping this \[antibody] does not make sense anymore.
 
 Prior to that, I used [zgen], which also stopped being actively developed and the
-[developer](https://github.com/tarjoilija) seems to have disappeared.
+[developer](https://github.com/tarjoilija) seems to have disappeared. (_Shoutout
+to @jandamm for carrying on Zgen with [Zgenom](https://github.com/jandamm/zgenom)!)
 
 In November 2021, a relatively well known and popular Zsh plugin manager, zinit, was
 removed from GitHub entirely and without warning. In fact, the author
 [deleted almost his entire body of work][zdharma-debacle]. Zinit was really popular
 because it was super fast, and the author promoted his projects in multiple venues
-for many years. (_Quick shoutout to the folks running [zdharma-continuum] though -
+for many years. (_Shoutout to the folks running [zdharma-continuum] though -
 great work keeping Zinit alive!_)
 
-With the instablility in the Zsh plugin manager space, it got me wondering why I even
-bother with a plugin manager at all.
+With all the instablility in the Zsh plugin manager space, it got me wondering why I
+even bother with a plugin manager at all.
 
 ### :bulb: The simple idea
 
