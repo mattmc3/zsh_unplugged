@@ -19,7 +19,7 @@ plugins=(
   rupa/z                 _z
 )
 
-source $PROJECT_HOME/zunplugged.zsh
+source $PROJECT_HOME/zsh_unplugged.plugin.zsh
 
 for repo in ${(ko)plugins}; do
   func=$plugins[$repo]
