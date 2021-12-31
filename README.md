@@ -87,8 +87,8 @@ using small, easy to understand snippets of Zsh. All this with the hope that per
 once-and-for-all, we can do away with the idea that we even need to use bloated Zsh
 plugin manager projects and just simply do it ourselves.
 
-You can simply grab a ~20 line function and you have everything you need to manage your
-own plugins from here on out. By way of contrast, I ran a rough line count of zinit's
+You can grab a ~20 line function and you have everything you need to manage your own
+plugins from here on out. By way of contrast, I ran a rough line count of zinit's
 codebase which comes out to nearly a whopping ~10,000 lines.
 
 ```zsh
