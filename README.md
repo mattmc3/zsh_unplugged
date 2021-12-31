@@ -187,74 +187,39 @@ You can even get turbocharged-hypersonic-load-speed-magic :rocket: if you choose
 the [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin.
 [See how here](#question-how-do-i-load-my-plugins-with-hypersonic-speed-rocket).
 
-### :question: How do I actually load (source) my plugins?
+### :question: How do you use this in your own Zsh config?
 
-After grabbing the `plugin-load` function, add a snippet like the following to your
-`.zshrc`:
-
-```zsh
-# ...the plugin-load function goes here, or sourced from a separate file
-# function plugin-load () { ... }
-
-# set where we should store Zsh plugins
-ZPLUGINDIR=~/.config/zsh/plugins
-
-# add your plugins to this list
-plugins=(
-  # prompt
-  sindresorhus/pure
-
-  # use zsh-defer magic to load the remaining plugins at hypersonic speed!
-  romkatv/zsh-defer
-
-  # core plugins
-  zsh-users/zsh-autosuggestions
-  zsh-users/zsh-history-substring-search
-  olets/zsh-abbr
-
-  # user plugins
-  rupa/z
-  peterhurford/up.zsh
-  rummik/zsh-tailf
-
-  # load this one last
-  zsh-users/zsh-syntax-highlighting
-)
-
-# load your plugins (clone, source, and add to fpath)
-plugin-load $plugins
-```
-
-### :question: Can I use this repo as a plugin?
-
-Sure, sort of. You have to clone it manually first, but it's possible.
-Do something like this in your .zshrc:
+You are free to grab the `plugin-load` function above and put it directly in your
+.zshrc, maintain it yourself, and never rely on anyone else's plugin manager again. Or,
+this repo makes the plugin-load function available as a plugin itself if you prefer.
+Here's an example .zshrc:
 
 ```zsh
 # where do you want to store your plugins?
 ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
 
-# get zsh_unplugged as a plugin
+# get zsh_unplugged and store it with your other plugins
 if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
-  git clone https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
+  git clone --quiet https://github.com/mattmc3/zsh_unplugged $ZPLUGINDIR/zsh_unplugged
 fi
-source $ZPLUGINDIR/zsh_unplugged/zunplugged.zsh
+source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.plugin.zsh
 
-# make list of the other Zsh plugins you use
+# make list of the Zsh plugins you use
 plugins=(
-  # load these first
+  # plugins like prompts and defer that need loaded first
   sindresorhus/pure
   romkatv/zsh-defer
 
-  # other plugins
+  # all other plugins
   zsh-users/zsh-autosuggestions
+  zsh-users/zsh-history-substring-search
   # ...
 
-  # load these last
+  # plugins like syntax highlighting that need loaded last
   zdharma-continuum/fast-syntax-highlighting
 )
 
-# load all your plugins
+# now load your plugins
 plugin-load $plugins
 ```
 
