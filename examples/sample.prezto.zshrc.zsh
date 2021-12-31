@@ -1,5 +1,5 @@
 # ...standard prezto boilerplate goes here...
-ZPREZTODIR=${ZPREZTODIR:-${ZDOTDIR:-~}/.prezto}
+ZPREZTODIR=${ZPREZTODIR:-${ZDOTDIR:-$HOME}/.prezto}
 
 # clone your external plugins if needed
 external_plugins=(

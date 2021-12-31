@@ -5,7 +5,7 @@
 # and add it to your fpath
 function plugin-load() {
   local repo plugin_name plugin_dir initfile initfiles
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugin_name=${repo:t}
     plugin_dir=$ZPLUGINDIR/$plugin_name
@@ -26,7 +26,7 @@ function plugin-load() {
 
 # if you want to compile your plugins you may see performance gains
 function plugin-compile () {
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   autoload -U zrecompile
   local f
   for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do

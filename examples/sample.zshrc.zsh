@@ -4,7 +4,7 @@
 # declare a simple plugin-load function
 function plugin-load() {
   local repo plugin_name plugin_dir initfile initfiles
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugin_name=${repo:t}
     plugin_dir=$ZPLUGINDIR/$plugin_name

@@ -152,7 +152,7 @@ plugins:
 # and add it to your fpath
 function plugin-load() {
   local repo plugin_name plugin_dir initfile initfiles
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugin_name=${repo:t}
     plugin_dir=$ZPLUGINDIR/$plugin_name
@@ -232,7 +232,7 @@ Do something like this in your .zshrc:
 
 ```zsh
 # where do you want to store your plugins?
-ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-~/.config/zsh}/plugins}
+ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
 
 # get zsh_unplugged as a plugin
 if [[ ! -d $ZPLUGINDIR/zsh_unplugged ]]; then
@@ -333,7 +333,7 @@ of your Zsh, you can use this function
 
 ```zsh
 function plugin-compile () {
-  ZPLUGINDIR=${ZPLUGINDIR:-~/.config/zsh/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-$HOME/.config/zsh/plugins}
   autoload -U zrecompile
   local f
   for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do

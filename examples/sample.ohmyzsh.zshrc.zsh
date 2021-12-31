@@ -1,5 +1,5 @@
 # ...standard oh-my-zsh boilerplate goes here...
-ZSH=${ZSH:-~/.oh-my-zsh}
+ZSH=${ZSH:-$HOME/.oh-my-zsh}
 ZSH_CUSTOM=${ZSH_CUSTOM:-$ZSH/custom}
 
 # clone your external plugins if needed
