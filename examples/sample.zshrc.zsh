@@ -14,7 +14,7 @@ function plugin-load() {
       git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh(N))
+      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh{-theme,}(N))
       [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
       ln -s "${initfiles[1]}" "$initfile"
     fi
