@@ -57,7 +57,7 @@ The author even [went so far as to say](https://github.com/getantibody/antibody/
 
 Prior to that, I used [zgen], which also stopped being actively developed and the
 [developer](https://github.com/tarjoilija) seems to have disappeared. (_Shoutout
-to @jandamm for carrying on Zgen with [Zgenom](https://github.com/jandamm/zgenom)!)
+to @jandamm for carrying on Zgen with [Zgenom](https://github.com/jandamm/zgenom)!_)
 
 In November 2021, a relatively well known and popular Zsh plugin manager, zinit, was
 removed from GitHub entirely and without warning. In fact, the author
