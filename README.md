@@ -3,8 +3,7 @@
 > 🤔 perhaps you don't need a Zsh plugin manager after all...
 
 TLDR; You don't need a big bloated plugin manager for your Zsh plugins. A simple
-~20 line function may be all you need. And, it has hypersonic-turbo-speed
-performance to boot!
+~20 line function may be all you need.
 
 Click here to [skip to the code](#jigsaw-the-humble-plugin-load-function).
 
@@ -177,7 +176,7 @@ function plugin-load() {
 ```
 
 That's it. ~20 lines of code and you have a simple, robust Zsh plugin management
-alternative that is likely faster than most everything else out there.
+alternative that is likely as fast as most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then find and symlink the
@@ -187,8 +186,8 @@ open a new terminal.
 
 Then, the plugin is sourced and added to `fpath`.
 
-You can even get turbocharged-hypersonic-load-speed-magic :rocket: if you choose to use
-the [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin.
+You can even get turbocharged-hypersonic-load-speed-magic :rocket: if you really need
+every last bit of performance.
 [See how here](#question-how-do-i-load-my-plugins-with-hypersonic-speed-rocket).
 
 ### :question: How do you use this in your own Zsh config?
@@ -210,17 +209,16 @@ source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.plugin.zsh
 
 # make list of the Zsh plugins you use
 plugins=(
-  # plugins like prompts and defer that need loaded first
+  # plugins that you want loaded first
   sindresorhus/pure
-  romkatv/zsh-defer
 
-  # all other plugins
+  # other plugins
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-history-substring-search
   # ...
 
-  # plugins like syntax highlighting that need loaded last
-  zdharma-continuum/fast-syntax-highlighting
+  # plugins like syntax highlighting that you want loaded last
+  zsh-users/zsh-syntax-highlighting
 )
 
 # now load your plugins
@@ -282,16 +280,15 @@ rm -rfi $ZPLUGINDIR/fast-syntax-highlighting
 You can get turbocharged-hypersonic-load-speed-magic if you choose to use the
 [romkatv/zsh-defer](https://github.com/romkatv/zsh-defer) plugin. Essentially, if you
 add `romkatv/zsh-defer` to your plugins list, everything you load afterwards will use
-zsh-defer, meaning you'll get speeds similar to zinit's turbo mode.
+zsh-defer, meaning you'll get speeds similar to zinit's [turbo mode](https://github.com/zdharma-continuum/zinit#turbo-and-lucid).
 
 Notably, if you like the [zsh-abbr] plugin for fish-like abbreviations in Zsh,
 using zsh-defer [will boost performance greatly](https://github.com/olets/zsh-abbr/issues/52).
 
-:warning: Warning - be careful and verify which plugins work well with zsh-defer. If you get
-weird behavior from a plugin, then load it before zsh-defer. In my extensive testing, the
-[pure] prompt was the only one I needed to load prior to zsh-defer, and everything else worked
-as expected. If you find a plugin that doesn't work well with zsh-defer, feel free to open an
-issue and I'll note it here.
+:warning: Warning - the author of zsh-defer does not recommend using the plugin this way,
+so be careful and selective about which plugins you load with zsh-defer. If you get weird
+behavior from a plugin, then load it before zsh-defer. In my extensive testing, the biggest
+benefit came only from especially sluggish plugins like [zsh-abbr].
 
 ### :question: What if I want my plugins to be even faster?
 
