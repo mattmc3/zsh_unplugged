@@ -153,8 +153,7 @@ simple function wrapper as the basis for everything you need to manage your own 
 plugins:
 
 ```zsh
-# clone a plugin, identify its init file, source it (with zsh-defer if available)
-# and add it to your fpath
+# clone a plugin, identify its init file, source it, and add it to your fpath
 function plugin-load() {
   local repo plugin_name plugin_dir initfile initfiles
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
@@ -169,7 +168,7 @@ function plugin-load() {
     if [[ ! -e $initfile ]]; then
       initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh{-theme,}(N))
       [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
-      ln -s "${initfiles[1]}" "$initfile"
+      ln -sf "${initfiles[1]}" "$initfile"
     fi
     fpath+=$plugin_dir
     (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
