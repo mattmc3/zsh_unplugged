@@ -11,7 +11,7 @@ Click here to [skip to the code](#jigsaw-the-humble-plugin-load-function).
 
 ### :newspaper_roll: Current state
 
-There are an embarassingly large number of Zsh plugin managers out there. Many of them
+There are an embarrassingly large number of Zsh plugin managers out there. Many of them
 are abandonware, are no longer actively developed, are brand new without many users, or
 don't have much reason to even exist other than as a novelty.
 
@@ -65,7 +65,7 @@ because it was super fast, and the author promoted his projects in multiple venu
 for many years. (_Shoutout to the folks running [zdharma-continuum] though -
 great work keeping Zinit alive!_)
 
-With all the instablility in the Zsh plugin manager space, it got me wondering why I
+With all the instability in the Zsh plugin manager space, it got me wondering why I
 even bother with a plugin manager at all.
 
 ### :bulb: The simple idea
@@ -77,7 +77,7 @@ When developing [pz], my goal was simple - make a plugin manager in a single Zsh
 that was fast, functional, and easy to understand - which was everything I loved about
 [zgen]. While [pz] is still a great project, I kept wondering if I could cut further
 from a single file to a single _function_ and do away with plugin management utilities
-alltogether.
+altogether.
 
 Thus was born... **zsh_unplugged**.
 
@@ -120,7 +120,7 @@ Results:
 
 ### :gear: The bare metal way
 
-If you don't want to use anything resemblineg a plugin manager at all, you could simply
+If you don't want to use anything resembling a plugin manager at all, you could simply
 clone and source plugins yourself manually:
 
 ```zsh
