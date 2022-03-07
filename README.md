@@ -21,7 +21,7 @@ Here's a list of many (but certainly not all) of them from [awesome-zsh-plugins]
 |--------------------|--------------------|-------------------------------------------------|
 | [antibody]         | :rabbit2: fast     | :imp: Maintenance mode, no new features         |
 | [antigen]          | :turtle: slow      | :imp: Maintenance mode, no new features         |
-| [pz]               | :rabbit2: fast     | :white_check_mark: Active                       |
+| [antidote]         | :rabbit2: fast     | :white_check_mark: Active                       |
 | [sheldon]          | :question: unknown | :white_check_mark: Active                       |
 | [zcomet]           | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zgem]             | :question: unknown | :skull_and_crossbones: Abandonware              |
@@ -36,7 +36,7 @@ Here's a list of many (but certainly not all) of them from [awesome-zsh-plugins]
 | [zpm]              | :rabbit2: fast     | :white_check_mark: Active                       |
 | [zr]               | :question: unknown | :imp: Few/no recent commits                     |
 
-_Full disclosure, I'm the author of one of these - [pz]._
+_Full disclosure, I'm the author of one of these - [antidote] (formerly called [pz])._
 
 There's new ones popping up all the time too:
 
@@ -71,13 +71,12 @@ even bother with a plugin manager at all.
 ### :bulb: The simple idea
 
 After [antibody] was deprecated, I tried [znap], but it was in early development at the
-time and kept breaking, so like many others before me, I decided to write my own - [pz].
+time and kept breaking, so like many others before me, I decided to write my own - [antidote].
 
-When developing [pz], my goal was simple - make a plugin manager in a single Zsh file
+When developing [antidote], my goal was simple - make a plugin manager
 that was fast, functional, and easy to understand - which was everything I loved about
-[zgen]. While [pz] is still a great project, I kept wondering if I could cut further
-from a single file to a single _function_ and do away with plugin management utilities
-altogether.
+[zgen]. While [antidote] is a great project, I kept wondering if I could cut further
+down to a single _function_ and do away with plugin management utilities altogether.
 
 Thus was born... **zsh_unplugged**.
 
@@ -384,7 +383,8 @@ zstyle ':prezto:load' pmodule \
 [antibody]: https://github.com/getantibody/antibody
 [antigen]: https://github.com/zsh-users/antigen
 [mzpm]: https://github.com/xylous/mzpm
-[pz]: https://github.com/mattmc3/pz
+[antidote]: https://github.com/mattmc3/antidote
+[pz]: https://github.com/mattmc3/antidote/tree/pz
 [sheldon]: https://github.com/rossmacarthur/sheldon
 [tzpm]: https://github.com/notusknot/tzpm
 [uz]: https://github.com/maxrodrigo/uz
