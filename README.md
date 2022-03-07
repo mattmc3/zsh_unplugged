@@ -152,7 +152,7 @@ plugins:
 
 ```zsh
 # clone a plugin, identify its init file, source it, and add it to your fpath
-function plugin-load() {
+function plugin-load {
   local repo plugin_name plugin_dir initfile initfiles
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
@@ -207,21 +207,23 @@ fi
 source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.plugin.zsh
 
 # make list of the Zsh plugins you use
-plugins=(
+repos=(
   # plugins that you want loaded first
   sindresorhus/pure
 
   # other plugins
-  zsh-users/zsh-autosuggestions
-  zsh-users/zsh-history-substring-search
+  zsh-users/zsh-completions
+  rupa/z
   # ...
 
-  # plugins like syntax highlighting that you want loaded last
+  # plugins you want loaded last
   zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-history-substring-search
+  zsh-users/zsh-autosuggestions
 )
 
 # now load your plugins
-plugin-load $plugins
+plugin-load $repos
 ```
 
 ### :question: How do I update my plugins?
@@ -238,7 +240,7 @@ If you are comfortable with `git` commands and prefer to not rebuild everything,
 can run `git pull` yourself, or even use a simple `plugin-update` function:
 
 ```zsh
-function plugin-update () {
+function plugin-update {
   ZPLUGINDIR=${ZPLUGINDIR:-$HOME/.config/zsh/plugins}
   for d in $ZPLUGINDIR/*/.git(/); do
     echo "Updating ${d:h:t}..."
@@ -319,17 +321,16 @@ plugin manager free with Zsh frameworks:
 If you are using [Oh-My-Zsh][ohmyzsh], the way to go without a plugin manager would be
 to utilize the `$ZSH_CUSTOM` path.
 
-
 _Note that this assumes your init file is called {plugin_name}.plugin.zsh which may not
 be true._
 
 ```zsh
-external_plugins=(
-  zsh-users/zsh-autosuggestions
+repos=(
   marlonrichert/zsh-hist
   zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-autosuggestions
 )
-for repo in $external_plugins; do
+for repo in $repos; do
   if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
     git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
   fi
@@ -354,12 +355,12 @@ _Note that this assumes your init file is called {plugin_name}.plugin.zsh which 
 be true._
 
 ```zsh
-external_plugins=(
+repos=(
   rupa/z
   marlonrichert/zsh-hist
   mattmc3/zman
 )
-for repo in $external_plugins; do
+for repo in $repos; do
   if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
     git clone https://github.com/${repo} $ZPREZTODIR/contrib/${repo:t}/external
     echo "source \${0:A:h}/external/${repo:t}.plugin.zsh" > $ZPREZTODIR/contrib/${repo:t}/init.zsh
