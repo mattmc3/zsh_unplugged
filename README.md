@@ -75,15 +75,18 @@ time and kept breaking, so like many others before me, I decided to write my own
 
 When developing [antidote], my goal was simple - make a plugin manager
 that was fast, functional, and easy to understand - which was everything I loved about
-[zgen]. While [antidote] is a great project, I kept wondering if I could cut further
-down to a single _function_ and do away with plugin management utilities altogether.
+[zgen] and [antibody]. While [antidote] is a great project, and what I fully recommend
+if you want to use a plugin manager, I kept wondering if I could cut further
+down to a single _function_ and see what it would take to not use plugin management
+utilities altogether.
 
 Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to show you how to manage your own plugins
 using small, easy to understand snippets of Zsh. All this with the hope that perhaps,
-once-and-for-all, we can do away with the idea that we even need to use bloated Zsh
-plugin manager projects and just simply do it ourselves.
+once-and-for-all, we can demystify what plugin managers do, and perhaps for simple
+configs do away with the idea that we even need to use bloated Zsh plugin manager
+projects and just simply do it ourselves.
 
 You can grab a ~20 line function and you have everything you need to manage your own
 plugins from here on out. By way of contrast, I ran a rough line count of zinit's
