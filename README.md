@@ -341,6 +341,7 @@ for repo in $repos; do
     git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
   fi
 done
+unset repo{s,}
 
 # add your external plugins to your OMZ plugins list
 plugins=(
