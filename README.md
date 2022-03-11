@@ -314,10 +314,11 @@ function plugin-compile {
 
 ### :question: How can I use this with Zsh frameworks like Oh-My-Zsh or Prezto?
 
-[Oh-My-Zsh][ohmyzsh] and [Prezto][prezto] have their own built-in methods for managing
-the loading of plugins. You don't need this script if you are using those frameworks.
-However, you also don't need a separate plugin manager utility. Here's how you go
-plugin manager free with Zsh frameworks:
+[Oh-My-Zsh][ohmyzsh] and [Prezto][prezto] have their own built-in methods for loading
+plugins, they just don't come with a way to clone them. You don't need the zsh_unplugged
+script if you are using those frameworks. However, you also don't need a separate plugin
+manager utility. Here's how you handle cloning yourself and go plugin-manager-free with
+Zsh frameworks:
 
 #### Oh-My-Zsh
 
@@ -328,6 +329,8 @@ _Note that this assumes your init file is called {plugin_name}.plugin.zsh which 
 be true._
 
 ```zsh
+# .zshrc
+# don't call this list 'plugins' since omz uses that
 repos=(
   marlonrichert/zsh-hist
   zsh-users/zsh-syntax-highlighting
@@ -358,19 +361,20 @@ _Note that this assumes your init file is called {plugin_name}.plugin.zsh which 
 be true._
 
 ```zsh
-repos=(
+# .zshrc
+contribs=(
   rupa/z
   marlonrichert/zsh-hist
   mattmc3/zman
 )
-for repo in $repos; do
-  if [[ ! -d $ZPREZTODIR/contrib/${repo:t} ]]; then
-    git clone https://github.com/${repo} $ZPREZTODIR/contrib/${repo:t}/external
-    echo "source \${0:A:h}/external/${repo:t}.plugin.zsh" > $ZPREZTODIR/contrib/${repo:t}/init.zsh
+for contrib in $contribs; do
+  if [[ ! -d $ZPREZTODIR/contrib/${contrib:t} ]]; then
+    git clone https://github.com/${contrib} $ZPREZTODIR/contrib/${contrib:t}
   fi
 done
+unset contrib{,s}
 
-# add plugins to your Prezto plugins list in .zpreztorc
+# add the contribs to your Prezto modules list in your `.zpreztorc`
 zstyle ':prezto:load' pmodule \
   ... \
   z \
