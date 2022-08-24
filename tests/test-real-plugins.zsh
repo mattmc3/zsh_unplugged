@@ -1,5 +1,9 @@
-@echo "=== ${0:t:r} ==="
-PROJECT_HOME=${0:a:h:h}
+#!/usr/bin/env zsh
+0=${(%):-%x}
+BASEDIR=${0:A:h:h}
+source $ZTAP_HOME/ztap3.zsh
+ztap_header "${0:t:r}"
+
 ZPLUGINDIR=$(mktemp -d -t ztap)
 
 typeset -gA plugins
@@ -19,7 +23,7 @@ plugins=(
   rupa/z                 _z
 )
 
-source $PROJECT_HOME/zsh_unplugged.plugin.zsh
+source $BASEDIR/zsh_unplugged.plugin.zsh
 
 for repo in ${(ko)plugins}; do
   func=$plugins[$repo]
@@ -34,3 +38,5 @@ done
 if [[ -d $ZPLUGINDIR ]] && [[ $ZPLUGINDIR = *ztap* ]]; then
   rm -rf $ZPLUGINDIR
 fi
+
+ztap_footer
