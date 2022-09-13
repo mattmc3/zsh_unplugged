@@ -129,17 +129,21 @@ clone and source plugins yourself manually:
 ZPLUGINDIR=$HOME/.zsh/plugins
 
 if [[ ! -d $ZPLUGINDIR/zsh-autosuggestions ]]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions $ZPLUGINDIR/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions \
+            $ZPLUGINDIR/zsh-autosuggestions
 fi
-if [[ ! -d $ZPLUGINDIR/zsh-history-substring-search ]]; then
-  git clone https://github.com/zsh-users/zsh-history-substring-search $ZPLUGINDIR/zsh-history-substring-search
-fi
-if [[ ! -d $ZPLUGINDIR/z ]]; then
-  git clone https://github.com/rupa/z $ZPLUGINDIR/z
-fi
-
 source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+
+if [[ ! -d $ZPLUGINDIR/zsh-history-substring-search ]]; then
+  git clone https://github.com/zsh-users/zsh-history-substring-search \
+            $ZPLUGINDIR/zsh-history-substring-search
+fi
 source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+
+if [[ ! -d $ZPLUGINDIR/z ]]; then
+  git clone https://github.com/rupa/z \
+            $ZPLUGINDIR/z
+fi
 source $ZPLUGINDIR/z/z.sh
 ```
 
@@ -181,8 +185,8 @@ alternative that is likely as fast as most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
 repo for an appropriate .zsh file to use as an init script. We then find and symlink the
-plugin's init file if necessary, which allows us to get the performance advantage
-of static sourcing rather than searching for which plugin files to load every time we
+plugin's init file if necessary, which allows us to get close to the performance advantage
+of static sourcing rather than searching for which plugin file to load every time we
 open a new terminal.
 
 Then, the plugin is sourced and added to `fpath`.
