@@ -1,24 +1,23 @@
-# zunplugged: https://github.com/mattmc3/zsh_unplugged
+# zsh_unplugged: https://github.com/mattmc3/zsh_unplugged
 # a simple, ultra-fast plugin handler
 
 # clone a plugin, identify its init file, source it, and add it to your fpath
-function plugin-load() {
-  local repo plugin_name plugin_dir initfile initfiles
+function plugin-load {
+  local repo plugdir initfile
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
-    plugin_name=${repo:t}
-    plugin_dir=$ZPLUGINDIR/$plugin_name
-    initfile=$plugin_dir/$plugin_name.plugin.zsh
-    if [[ ! -d $plugin_dir ]]; then
-      echo "Cloning $repo"
-      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+    plugdir=$ZPLUGINDIR/${repo:t}
+    initfile=$plugdir/${repo:t}.plugin.zsh
+    if [[ ! -d $plugdir ]]; then
+      echo "Cloning $repo..."
+      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh{-theme,}(N))
-      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
+      local -a initfiles=($plugdir/*.plugin.{z,}sh(N) $plugdir/*.{z,}sh{-theme,}(N))
+      (( $#initfiles )) || { echo >&2 "No init file found '$repo'." && continue }
       ln -sf "${initfiles[1]}" "$initfile"
     fi
-    fpath+=$plugin_dir
+    fpath+=$plugdir
     (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
