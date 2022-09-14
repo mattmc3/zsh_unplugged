@@ -62,8 +62,7 @@ In November 2021, a relatively well known and popular Zsh plugin manager, zinit,
 removed from GitHub entirely and without warning. In fact, the author
 [deleted almost his entire body of work][zdharma-debacle]. Zinit was really popular
 because it was super fast, and the author promoted his projects in multiple venues
-for many years. (_Shoutout to the folks running [zdharma-continuum] though -
-great work keeping Zinit alive!_)
+for many years. (_Shoutout to [zdharma-continuum] for carrying on with zinit!_)
 
 With all the instability in the Zsh plugin manager space, it got me wondering why I
 even bother with a plugin manager at all.
@@ -75,7 +74,7 @@ time and kept breaking, so like many others before me, I decided to write my own
 
 When developing [antidote], my goal was simple - make a plugin manager
 that was fast, functional, and easy to understand - which was everything I loved about
-[zgen] and [antibody]. While [antidote] is a great project, and what I fully recommend
+[zgen] and [antibody]. While [antidote] is a great project, and I fully recommend it
 if you want to use a plugin manager, I kept wondering if I could cut further
 down to a single _function_ and see what it would take to not use plugin management
 utilities altogether.
@@ -83,10 +82,10 @@ utilities altogether.
 Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to show you how to manage your own plugins
-using small, easy to understand snippets of Zsh. All this with the hope that perhaps,
-once-and-for-all, we can demystify what plugin managers do, and perhaps for simple
-configs do away with the idea that we even need to use bloated Zsh plugin manager
-projects and just simply do it ourselves.
+using small, easy to understand snippets of Zsh. All this with the thought that perhaps,
+once-and-for-all, we can demystify what plugin managers do. And maybe for simple
+configs, do away with the idea that we even need to use bloated Zsh plugin managers
+and just simply do it ourselves.
 
 You can grab a ~20 line function and you have everything you need to manage your own
 plugins from here on out. By way of contrast, I ran a rough line count of zinit's
@@ -184,10 +183,10 @@ That's it. ~20 lines of code and you have a simple, robust Zsh plugin management
 alternative that is likely as fast as most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
-repo for an appropriate .zsh file to use as an init script. We then find and symlink the
-plugin's init file if necessary, which allows us to get close to the performance advantage
-of static sourcing rather than searching for which plugin file to load every time we
-open a new terminal.
+repo for an appropriate .zsh file to use as an init script. We then find and symlink
+the plugin's init file if necessary, which allows us to get close to the performance
+advantage of static sourcing rather than searching for which plugin file to load every
+time we open a new terminal.
 
 Then, the plugin is sourced and added to `fpath`.
 
@@ -231,6 +230,8 @@ repos=(
 # now load your plugins
 plugin-load $repos
 ```
+
+Here is an sample [.zshrc](https://github.com/mattmc3/zsh_unplugged/blob/main/examples/zshrc.zsh).
 
 ### :question: How do I update my plugins?
 
@@ -292,17 +293,97 @@ zsh-defer, meaning you'll get speeds similar to zinit's [turbo mode](https://git
 Notably, if you like the [zsh-abbr] plugin for fish-like abbreviations in Zsh,
 using zsh-defer [will boost performance greatly](https://github.com/olets/zsh-abbr/issues/52).
 
-:warning: Warning - the author of zsh-defer does not recommend using the plugin this way,
-so be careful and selective about which plugins you load with zsh-defer. If you get weird
-behavior from a plugin, then load it before zsh-defer. In my extensive testing, the biggest
-benefit came only from especially sluggish plugins like [zsh-abbr].
+:warning: Warning - the author of zsh-defer does not recommend using the plugin this
+way, so be careful and selective about which plugins you load with zsh-defer. If you
+get weird behavior from a plugin, then load it before zsh-defer. In my extensive
+testing, the biggest benefit came only from especially sluggish plugins like [zsh-abbr].
+
+### :question: What if I need to customize how a plugin is loaded?
+
+You can separate the clone and load actions into two separate functions, allowing you
+to further customize how you handle plugins. This technique is especially useful if you
+are using a project like [zsh-utils] with nested plugins, or using utilities like
+[zsh-bench] which aren't plugins.
+
+```zsh
+# declare a simple plugin-clone function, leaving the user to load plugins themselves
+function plugin-clone {
+  local repo plugdir initfile
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  for repo in $@; do
+    plugdir=$ZPLUGINDIR/${repo:t}
+    initfile=$plugdir/${repo:t}.plugin.zsh
+    if [[ ! -d $plugdir ]]; then
+      echo "Cloning $repo..."
+      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
+    fi
+    if [[ ! -e $initfile ]]; then
+      local -a initfiles=($plugdir/*.plugin.{z,}sh(N) $plugdir/*.{z,}sh{-theme,}(N))
+      (( $#initfiles )) && ln -sf "${initfiles[1]}" "$initfile"
+    fi
+  done
+}
+
+# now, plugin-source is a separate thing
+function plugin-source {
+  local plugdir
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  for plugdir in $@; do
+    [[ $plugdir = /* ]] || plugdir=$ZPLUGINDIR/$plugdir
+    fpath+=$plugdir
+    local initfile=$plugdir/${plugdir:t}.plugin.zsh
+    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
+  done
+}
+```
+
+You can then use these two functions like so:
+
+```zsh
+# make a github repo plugins list
+repos=(
+  # not-sourcable plugins
+  romkatv/zsh-bench
+
+  # projects with nested plugins
+  belak/zsh-utils
+  ohmyzsh/ohmyzsh
+
+  # regular plugins
+  zsh-users/zsh-autosuggestions
+  zsh-users/zsh-history-substring-search
+  zdharma-continuum/fast-syntax-highlighting
+)
+plugin-clone $repos
+
+# handle non-standard plugins
+export PATH="$ZPLUGINDIR/zsh-bench:$PATH"
+for file in $ZPLUGINDIR/ohmyzsh/lib/*.zsh; do
+  source $file
+done
+
+# source other plugins
+plugins=(
+  zsh-utils/history
+  zsh-utils/complete
+  zsh-utils/utility
+  ohmyzsh/plugins/magic-enter
+  ohmyzsh/plugins/history-substring-search
+  ohmyzsh/plugins/z
+  fast-syntax-highlighting
+  zsh-autosuggestions
+)
+plugin-source $plugins
+```
+
+Here is an sample [.zshrc](https://github.com/mattmc3/zsh_unplugged/blob/main/examples/zshrc_clone.zsh).
 
 ### :question: What if I want my plugins to be even faster?
 
 If you are an experienced Zsh user, you may know about [zcompile], which takes your
 Zsh scripts and potentially speeds them up by compiling them to byte code. If you feel
 confident you know what you're doing and want to eek every last bit of performance out
-of your Zsh, you can use this function
+of your Zsh, you can use this function:
 
 ```zsh
 function plugin-compile {
@@ -417,3 +498,5 @@ zstyle ':prezto:load' pmodule \
 [prezto]: https://github.com/sorin-ionescu/prezto
 [pure]: https://github.com/sindresorhus/pure
 [zsh-abbr]: https://github.com/olets/zsh-abbr
+[zsh-utils]: https://github.com/belak/zsh-utils
+[zsh-bench]: https://github.com/romkatv/zsh-bench

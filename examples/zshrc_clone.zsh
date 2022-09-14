@@ -21,7 +21,7 @@ function plugin-clone {
   done
 }
 
-function plugin-load {
+function plugin-source {
   local plugdir
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for plugdir in $@; do
@@ -34,15 +34,27 @@ function plugin-load {
 
 # make a github repo plugins list
 repos=(
+  # not-sourcable plugins
+  romkatv/zsh-bench
+
+  # projects with nested plugins
   belak/zsh-utils
   ohmyzsh/ohmyzsh
+
+  # regular plugins
   zsh-users/zsh-autosuggestions
   zsh-users/zsh-history-substring-search
   zdharma-continuum/fast-syntax-highlighting
 )
 plugin-clone $repos
 
-# manually load what you want
+# handle non-standard plugins
+export PATH="$ZPLUGINDIR/zsh-bench:$PATH"
+for file in $ZPLUGINDIR/ohmyzsh/lib/*.zsh; do
+  source $file
+done
+
+# source other plugins
 plugins=(
   zsh-utils/history
   zsh-utils/complete
@@ -53,4 +65,4 @@ plugins=(
   fast-syntax-highlighting
   zsh-autosuggestions
 )
-plugin-load $plugins
+plugin-source $plugins
