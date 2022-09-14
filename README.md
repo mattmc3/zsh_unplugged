@@ -100,18 +100,18 @@ wc -l $zinit_tmpdir/**/*.zsh
 
 Results:
 ```
-      18 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/init.zsh
-      61 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/docker/utils.zsh
-     186 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/git-process-output.zsh
-      51 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/rpm2cpio.zsh
-      19 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/share/single-line.zsh
-      23 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/tests/setup.zsh
-      12 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/tests/teardown.zsh
-     147 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-additional.zsh
-    3486 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-autoload.zsh
-    2389 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-install.zsh
-     404 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit-side.zsh
-    3139 /var/folders/z0/w4blz6g14td2lf3b41gmhgd80000gn/T/tmp.w2WtwTZJ/zinit.zsh
+      18 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/docker/init.zsh
+      61 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/docker/utils.zsh
+     186 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/git-process-output.zsh
+      51 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/rpm2cpio.zsh
+      19 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/single-line.zsh
+      23 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/tests/setup.zsh
+      12 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/tests/teardown.zsh
+     147 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-additional.zsh
+    3486 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-autoload.zsh
+    2389 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-install.zsh
+     404 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-side.zsh
+    3139 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit.zsh
     9935 total
 ```
 
