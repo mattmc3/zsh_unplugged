@@ -306,7 +306,7 @@ are using a project like [zsh-utils] with nested plugins, or using utilities lik
 [zsh-bench] which aren't plugins.
 
 ```zsh
-# declare a simple plugin-clone function, leaving the user to load plugins themselves
+# declare a simple plugin-clone function, leaving the user to source plugins themselves
 function plugin-clone {
   local repo plugdir initfile
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
