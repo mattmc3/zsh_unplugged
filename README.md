@@ -83,9 +83,8 @@ Thus was born... **zsh_unplugged**.
 
 This isn't a plugin manager - it's a way to show you how to manage your own plugins
 using small, easy to understand snippets of Zsh. All this with the thought that perhaps,
-once-and-for-all, we can demystify what plugin managers do. And maybe for simple
-configs, do away with the idea that we even need to use bloated Zsh plugin managers
-and just simply do it ourselves.
+once-and-for-all, we can demystify what plugin managers do. And for basic configs do
+away with using a plugin manager altogether and simply do it ourselves.
 
 You can grab a ~20 line function and you have everything you need to manage your own
 plugins from here on out. By way of contrast, I ran a rough line count of zinit's
@@ -115,7 +114,7 @@ Results:
     9935 total
 ```
 
-\**Note: SLOC is not intended as an indicator of much here beyond a rough comparison of effort, maintainability, and complexity*
+\**Note: SLOC is not intended as anything more here than a rough comparison of effort, maintainability, and complexity*
 
 ## :tada: The code
 
