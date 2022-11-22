@@ -152,9 +152,8 @@ this method works, there's another way...
 
 ### :jigsaw: The humble `plugin-load` function
 
-If we go one level of abstraction higher than manual `git clone` calls, we can use a
-simple function wrapper as the basis for everything you need to manage your own Zsh
-plugins:
+If we go one level of abstraction higher than manually calling `git clone`, we can
+use a simple function as the basis for everything you need to manage Zsh plugins:
 
 ```zsh
 # clone a plugin, identify its init file, source it, and add it to your fpath
