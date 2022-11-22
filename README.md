@@ -339,7 +339,7 @@ function plugin-source {
 You can then use these two functions like so:
 
 ```zsh
-# make a github repo plugins list
+# make a list of github repos
 repos=(
   # not-sourcable plugins
   romkatv/zsh-bench
@@ -355,11 +355,16 @@ repos=(
 )
 plugin-clone $repos
 
-# handle non-standard plugins
+# zsh-bench doesn't have a plugin file
+# it just needs added to your $PATH
 export PATH="$ZPLUGINDIR/zsh-bench:$PATH"
-for file in $ZPLUGINDIR/ohmyzsh/lib/*.zsh; do
-  source $file
+
+# Oh-My-Zsh plugins rely on stuff in its lib directory
+ZSH=$ZPLUGINDIR/ohmyzsh
+for _f in $ZSH/lib/*.zsh; do
+  source $_f
 done
+unset _f
 
 # source other plugins
 plugins=(
