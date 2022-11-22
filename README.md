@@ -146,8 +146,8 @@ fi
 source $ZPLUGINDIR/z/z.sh
 ```
 
-This can get pretty cumbersome and tricky to maintain. You need to figure out each
-plugin's init file, and sometimes adding a plugin to your `fpath` is required. While
+This can get pretty repetitive, cumbersome, and tricky to maintain. You need to figure out
+each plugin's init file, and sometimes adding a plugin to your `fpath` is required. While
 this method works, there's another way...
 
 ### :jigsaw: The humble `plugin-load` function
