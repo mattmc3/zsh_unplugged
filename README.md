@@ -91,6 +91,7 @@ plugins from here on out. By way of contrast, I ran a rough line count of zinit'
 codebase which comes out to nearly a whopping ~10,000 lines.
 
 ```zsh
+# zinit is over 10,000+ lines of code
 zinit_tmpdir=$(mktemp -d)
 git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
 wc -l $zinit_tmpdir/**/*.zsh
