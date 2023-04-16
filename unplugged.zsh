@@ -19,7 +19,8 @@ autoload -Uz zrecompile
 
 ##? Clone zsh plugins in parallel and ensure proper plugin init files exist.
 function plugin-clone {
-  emulate -L zsh; setopt local_options no_monitor
+  emulate -L zsh
+  setopt local_options no_monitor
   local repo repodir
 
   for repo in ${(u)@}; do
@@ -72,22 +73,22 @@ function plugin-load {
   done
 }
 
-##? Update plugins
+##? Update plugins.
 function plugin-update {
   emulate -L zsh
   setopt local_options extended_glob glob_dots no_monitor
   local repodir
   for repodir in $ZPLUGINDIR/**/.git(N/); do
-    repodir=${repodir:A:h}
-    local url=$(git -C $repodir config remote.origin.url)
+    local url=$(git -C ${repodir:A:h} config remote.origin.url)
     echo "Updating ${url:h:t}/${url:t}..."
-    command git -C $repodir pull --quiet --ff --depth 1 --rebase --autostash &
+    command git -C ${repodir:A:h} pull --quiet --ff --depth 1 --rebase --autostash &
   done
   wait
   plugin-compile
   echo "Update complete."
 }
 
+##? Compile plugins.
 function plugin-compile {
   local zfile
   for zfile in ${1:-ZPLUGINDIR}/**/*.zsh{,-theme}(N); do
