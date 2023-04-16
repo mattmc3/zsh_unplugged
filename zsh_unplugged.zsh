@@ -1,10 +1,22 @@
-# zsh_unplugged: https://github.com/mattmc3/zsh_unplugged
-# a simple, ultra-fast plugin handler
+#
+# zsh_unplugged.zsh - https://github.com/mattmc3/zsh_unplugged
+#
+# A simple, ultra-fast, minimalist plugin management function in <20 lines of code.
+#
+# Usage:
+# source ${ZDOTDIR:-~}/zsh_unplugged.zsh
+# repos=(
+#   zsh-users/zsh-syntax-highlighting
+#   zsh-users/zsh-autosuggestions
+#   zsh-users/zsh-history-substring-search
+# )
+# plugin-load $repos
+#
 
-# clone a plugin, identify its init file, source it, and add it to your fpath
+##? Clone a plugin, identify its init file, source it, and add it to your fpath.
 function plugin-load {
   local repo plugdir initfile
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  : ${ZPLUGINDIR:=${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
@@ -19,15 +31,5 @@ function plugin-load {
     fi
     fpath+=$plugdir
     (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
-  done
-}
-
-# if you want to compile your plugins you may see performance gains
-function plugin-compile() {
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
-  autoload -U zrecompile
-  local f
-  for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do
-    zrecompile -pq "$f"
   done
 }
