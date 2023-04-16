@@ -42,28 +42,33 @@ function plugin-clone {
 
 ##? Load zsh plugins.
 function plugin-load {
-  local plugin pluginfile source_cmd
+  local plugin pluginfile
   local -a repos initpaths
 
   # repos are in the form user/repo. They contain a slash, but don't start with one.
   repos=(${${(M)@:#*/*}:#/*})
   plugin-clone $repos
-  (( $+functions[zsh-defer] )) && source_cmd=(zsh-defer .) || source_cmd=(.)
 
   for plugin in $@; do
-    pluginfile=${plugin:t}/${plugin:t}.plugin.zsh
-    initpaths=(
-      $ZPLUGINDIR/${pluginfile}(N)
-      ${ZDOTDIR:-$HOME/.config/zsh}/plugins/${pluginfile}(N)
-      $ZSH_CUSTOM/plugins/${pluginfile}(N)
-    )
-    if ! (( $#initpaths )); then
-      echo >&2 "Plugin not found '$plugin'."
-      continue
+    if [[ $plugin == /* ]]; then
+      initpaths=(
+        $plugin/${plugin:t}.plugin.zsh(N)
+        $plugin/*.{plugin.,}{z,}sh{-theme,}(N)
+        $plugin(N)
+      )
+    else
+      pluginfile=${plugin:t}/${plugin:t}.plugin.zsh
+      initpaths=(
+        $ZPLUGINDIR/${pluginfile}(N)
+        ${ZDOTDIR:-$HOME/.config/zsh}/plugins/${pluginfile}(N)
+        $ZSH_CUSTOM/plugins/${pluginfile}(N)
+      )
     fi
+
+    (( $#initpaths )) || { echo >&2 "Plugin not found '$plugin'."; continue }
     pluginfile=$initpaths[1]
     fpath+=($pluginfile:h)
-    $source_cmd $pluginfile
+    (( $+functions[zsh-defer] )) && zsh-defer . $pluginfile || . $pluginfile
   done
 }
 
