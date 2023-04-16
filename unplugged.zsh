@@ -16,7 +16,7 @@
 ##? Clone a plugin, identify its init file, source it, and add it to your fpath.
 function plugin-load {
   local repo plugdir initfile
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  : ${ZPLUGINDIR:=${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
