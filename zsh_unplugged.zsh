@@ -1,7 +1,7 @@
 #
 # zsh_unplugged - https://github.com/mattmc3/zsh_unplugged
 #
-# Simple, ultra-fast, minimalist Zsh plugin management functions.
+# Tiny, simple, ultra-fast, Zsh plugin management functions.
 #
 # Usage:
 # source ${ZDOTDIR:-~}/zsh_unplugged.zsh
@@ -13,29 +13,27 @@
 # plugin-load $repos
 #
 
-# Set the plugin destination.
-: ${ZPLUGINDIR:=${ZDOTDIR:-$HOME/.config/zsh}/plugins}
-autoload -Uz zrecompile
+# Set zsh_unplugged variables.
+if [[ -n "$ZPLUGINDIR" ]]; then
+  : ${ZUNPLUG_CUSTOM:=$ZPLUGINDIR}
+  : ${ZUNPLUG_REPOS:=$ZPLUGINDIR}
+else
+  : ${ZUNPLUG_CUSTOM:=${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  : ${ZUNPLUG_REPOS:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh_unplugged}
+fi
+typeset -gHa _zunplugopts=(extended_glob glob_dots no_monitor)
 
-##? Clone zsh plugins in parallel and ensure proper plugin init files exist.
+##? Clone zsh plugins in parallel
 function plugin-clone {
-  emulate -L zsh
-  setopt local_options no_monitor
-  local repo repodir
-
+  emulate -L zsh; setopt local_options $_zunplugopts
+  local repo
   for repo in ${(u)@}; do
-    repodir=$ZPLUGINDIR/${repo:t}
-    [[ ! -d $repodir ]] || continue
+    [[ ! -d $ZUNPLUG_REPOS/$repo ]] || continue
     echo "Cloning $repo..."
     (
       command git clone -q --depth 1 --recursive --shallow-submodules \
-        ${ZPLUGIN_GITURL:-https://github.com}/$repo $repodir
-      local initfile=$repodir/${repo:t}.plugin.zsh
-      if [[ ! -e $initfile ]]; then
-        local -a initfiles=($repodir/*.{plugin.,}{z,}sh{-theme,}(N))
-        (( $#initfiles )) && ln -sf $initfiles[1] $initfile
-      fi
-      plugin-compile $repodir
+        ${ZUNPLUG_GITURL:-https://github.com}/$repo $ZUNPLUG_REPOS/$repo
+      plugin-compile $ZUNPLUG_REPOS/$repo
     ) &
   done
   wait
@@ -43,30 +41,25 @@ function plugin-clone {
 
 ##? Load zsh plugins.
 function plugin-load {
-  local plugin pluginfile
-  local -a repos initpaths
+  local repo plugin pluginfile; local -Ua initpaths repos=()
 
-  # repos are in the form user/repo. They contain a slash, but don't start with one.
-  repos=(${${(M)@:#*/*}:#/*})
+  # Remove bare words and paths, then split/join to keep the user/repo part.
+  for repo in ${${(M)@:#*/*}:#/*}; do
+    repo=${(@j:/:)${(@s:/:)repo}[1,2]}
+    [[ -e $ZUNPLUG_REPOS/$repo ]] || repos+=$repo
+  done
   plugin-clone $repos
 
   for plugin in $@; do
-    if [[ $plugin == /* ]]; then
-      initpaths=(
-        $plugin/${plugin:t}.plugin.zsh(N)
-        $plugin/*.{plugin.,}{z,}sh{-theme,}(N)
-        $plugin(N)
-      )
-    else
-      pluginfile=${plugin:t}/${plugin:t}.plugin.zsh
-      initpaths=(
-        $ZPLUGINDIR/${pluginfile}(N)
-        ${ZDOTDIR:-$HOME/.config/zsh}/plugins/${pluginfile}(N)
-        $ZSH_CUSTOM/plugins/${pluginfile}(N)
-      )
-    fi
-
-    (( $#initpaths )) || { echo >&2 "Plugin not found '$plugin'."; continue }
+    initpaths=(
+      $ZUNPLUG_CUSTOM/${plugin}/${plugin:t}.{plugin.,}{z,}sh{-theme,}(N)
+      $ZUNPLUG_REPOS/${plugin}/${plugin:t}.plugin.zsh(N)
+      $ZUNPLUG_REPOS/${plugin}/*.{plugin.,}{z,}sh{-theme,}(N)
+      $ZUNPLUG_REPOS/$plugin(N)
+      ${(M)plugin:#/*}/${plugin:t}.{plugin.,}{z,}sh{-theme,}(N)
+      ${(M)plugin:#/*}(N)
+    )
+    (( $#initpaths )) || { echo >&2 "Plugin file not found '$plugin'." && continue }
     pluginfile=$initpaths[1]
     fpath+=($pluginfile:h)
     (( $+functions[zsh-defer] )) && zsh-defer . $pluginfile || . $pluginfile
@@ -75,10 +68,9 @@ function plugin-load {
 
 ##? Update plugins.
 function plugin-update {
-  emulate -L zsh
-  setopt local_options extended_glob glob_dots no_monitor
+  emulate -L zsh; setopt local_options $_zunplugopts
   local repodir
-  for repodir in $ZPLUGINDIR/**/.git(N/); do
+  for repodir in $ZUNPLUG_REPOS/**/.git(N/); do
     local url=$(git -C ${repodir:A:h} config remote.origin.url)
     echo "Updating ${url:h:t}/${url:t}..."
     command git -C ${repodir:A:h} pull --quiet --ff --depth 1 --rebase --autostash &
@@ -90,8 +82,10 @@ function plugin-update {
 
 ##? Compile plugins.
 function plugin-compile {
+  emulate -L zsh; setopt local_options $_zunplugopts
+  autoload -Uz zrecompile
   local zfile
-  for zfile in ${1:-ZPLUGINDIR}/**/*.zsh{,-theme}(N); do
+  for zfile in ${1:-ZUNPLUG_REPOS}/**/*.zsh{,-theme}(N); do
     [[ $zfile != */test-data/* ]] || continue
     zrecompile -pq "$zfile"
   done
