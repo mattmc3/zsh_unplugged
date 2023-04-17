@@ -1,9 +1,9 @@
 # .zshrc
 
-# Clone zsh_unplugged and use it as a plugin manager.
-# [[ -d $ZDOTDIR/.unplugged ]] ||
-#   git clone https://github.com/mattmc3/zsh_unplugged $ZDOTDIR/.unplugged
-# source $ZDOTDIR/.unplugged/zsh_unplugged.zsh
+# Clone zsh_unplugged and use it as a micro plugin manager.
+[[ -d $ZDOTDIR/.unplugged ]] ||
+  git clone https://github.com/mattmc3/zsh_unplugged $ZDOTDIR/.unplugged
+source $ZDOTDIR/.unplugged/zsh_unplugged.zsh
 
 # clone-only plugins
 plugin-clone romkatv/zsh-bench
