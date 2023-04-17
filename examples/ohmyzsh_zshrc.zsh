@@ -23,7 +23,7 @@ function plugin-load {
 # it can only contain the names of actual OMZ plugins
 plugins=(
   git
-  copydir
+  copypath
   extract
   magic-enter
 )
