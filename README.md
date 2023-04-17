@@ -88,31 +88,37 @@ away with using a plugin manager altogether and simply do it ourselves.
 
 You can grab a ~20 line function and you have everything you need to manage your own
 plugins from here on out. By way of contrast, I ran a rough line count of zinit's
-codebase which comes out to nearly a whopping ~10,000 lines\*.
+codebase which comes out to nearly an eye-watering 12,000 lines\*!
 
 ```zsh
 # zinit is over 10,000+ lines of code
 zinit_tmpdir=$(mktemp -d)
 git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
-wc -l $zinit_tmpdir/**/*.zsh
-[[ -d $zinit_tmpdir ]] && rm -rf $zinit_tmpdir
+wc -l $zinit_tmpdir/**/*.(zunit|zsh|sh) | sed "s|$TMPDIR||g"
+[[ -d $zinit_tmpdir ]] && rm -rf -- $zinit_tmpdir
 ```
 
 Results:
-```
-      18 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/docker/init.zsh
-      61 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/docker/utils.zsh
-     186 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/git-process-output.zsh
-      51 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/rpm2cpio.zsh
-      19 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/share/single-line.zsh
-      23 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/tests/setup.zsh
-      12 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/tests/teardown.zsh
-     147 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-additional.zsh
-    3486 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-autoload.zsh
-    2389 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-install.zsh
-     404 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit-side.zsh
-    3139 /var/folders/z0/w4blz6g14td2lf3b41gmhgd800gn/T/tmp.w2WtwTZJ/zinit.zsh
-    9935 total
+```text
+      26 tmp.CdZxk6jG/docker/init.zsh
+      69 tmp.CdZxk6jG/docker/utils.zsh
+      81 tmp.CdZxk6jG/scripts/docker-build.sh
+     260 tmp.CdZxk6jG/scripts/docker-run.sh
+     333 tmp.CdZxk6jG/scripts/install.sh
+     186 tmp.CdZxk6jG/share/git-process-output.zsh
+      64 tmp.CdZxk6jG/share/rpm2cpio.zsh
+      41 tmp.CdZxk6jG/tests/annexes.zunit
+      38 tmp.CdZxk6jG/tests/commands.zunit
+     703 tmp.CdZxk6jG/tests/gh-r.zunit
+      55 tmp.CdZxk6jG/tests/ices.zunit
+      55 tmp.CdZxk6jG/tests/plugins.zunit
+      84 tmp.CdZxk6jG/tests/snippets.zunit
+     155 tmp.CdZxk6jG/zinit-additional.zsh
+    3438 tmp.CdZxk6jG/zinit-autoload.zsh
+    2589 tmp.CdZxk6jG/zinit-install.zsh
+     397 tmp.CdZxk6jG/zinit-side.zsh
+    3327 tmp.CdZxk6jG/zinit.zsh
+   11901 total
 ```
 
 \**Note: SLOC is not intended as anything more here than a rough comparison of effort, maintainability, and complexity*
