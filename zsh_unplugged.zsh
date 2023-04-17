@@ -19,7 +19,7 @@ else
 fi
 typeset -gHa _zunplugopts=(extended_glob glob_dots no_monitor)
 
-##? Clone zsh plugins in parallel
+##? Clone zsh plugins in parallel.
 function plugin-clone {
   emulate -L zsh; setopt local_options $_zunplugopts
   local repo
@@ -38,27 +38,30 @@ function plugin-clone {
 ##? Load zsh plugins.
 function plugin-load {
   local repo plugin pluginfile; local -Ua initpaths repos=()
-
   # Remove bare words and paths, then split/join to keep the user/repo part.
   for repo in ${${(M)@:#*/*}:#/*}; do
     repo=${(@j:/:)${(@s:/:)repo}[1,2]}
     [[ -e $ZUNPLUG_REPOS/$repo ]] || repos+=$repo
   done
   plugin-clone $repos
+  source <(plugin-script $@)
+}
 
+##? Script loading of zsh plugins.
+function plugin-script {
+  local plugin pluginfile defer=0; local -Ua initpaths
   for plugin in $@; do
     initpaths=(
-      $ZUNPLUG_CUSTOM/${plugin}/${plugin:t}.{plugin.,}{z,}sh{-theme,}(N)
-      $ZUNPLUG_REPOS/${plugin}/${plugin:t}.plugin.zsh(N)
-      $ZUNPLUG_REPOS/${plugin}/*.{plugin.,}{z,}sh{-theme,}(N)
+      $ZUNPLUG_CUSTOM/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
+      $ZUNPLUG_REPOS/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
       $ZUNPLUG_REPOS/$plugin(N)
-      ${(M)plugin:#/*}/${plugin:t}.{plugin.,}{z,}sh{-theme,}(N)
-      ${(M)plugin:#/*}(N)
+      ${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
+      ${plugin}(N)
     )
     (( $#initpaths )) || { echo >&2 "Plugin file not found '$plugin'." && continue }
     pluginfile=$initpaths[1]
-    fpath+=($pluginfile:h)
-    (( $+functions[zsh-defer] )) && zsh-defer . $pluginfile || . $pluginfile
+    (( $defer )) && echo zsh-defer source $pluginfile || echo source $pluginfile
+    [[ "$plugin:t" == zsh-defer ]] && defer=1
   done
 }
 
