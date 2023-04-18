@@ -37,8 +37,6 @@ Cloning romkatv/zsh-defer...
 ```
 
 ```zsh
-% echo $ZPLUGINDIR | substenv
-$ZDOTDIR/plugins
 % setopt glob_dots extended_glob
 % zwcfiles=($ZPLUGINDIR/**/*.zwc(N))
 % echo $#zwcfiles

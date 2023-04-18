@@ -29,15 +29,18 @@ zsh_unplugged clones a plugin
 ```zsh
 % echo $+functions[zsh-defer]
 0
+% plugin-script romkatv/zsh-defer | substenv ZUNPLUG_REPOS
+source $ZUNPLUG_REPOS/romkatv/zsh-defer/zsh-defer.plugin.zsh
 % plugin-load romkatv/zsh-defer
-Cloning romkatv/zsh-defer...
 % echo $+functions[zsh-defer]
 1
 %
 ```
 
 ```zsh
-% echo $ZPLUGINDIR | substenv
+% echo $ZUNPLUG_REPOS | substenv HOME
+$HOME/.local/share/zsh_unplugged
+% echo $ZUNPLUG_CUSTOM | substenv ZDOTDIR
 $ZDOTDIR/plugins
 %
 ```

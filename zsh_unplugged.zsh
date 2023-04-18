@@ -53,7 +53,6 @@ function plugin-script {
   done
   plugin-clone $repos
 
-  local plugin pluginfile defer=0; local -Ua initpaths
   for plugin in $@; do
     initpaths=(
       $ZUNPLUG_CUSTOM/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
