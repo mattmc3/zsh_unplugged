@@ -5,7 +5,7 @@ ZPLUGINDIR=${ZDOTDIR:-$HOME/.config/zsh}/plugins
 
 # declare a simple plugin-clone function, leaving the user to load plugins themselves
 function plugin-clone {
-  local repo plugdir initfile
+  local repo plugdir initfile initfiles=()
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugdir=$ZPLUGINDIR/${repo:t}
@@ -15,8 +15,8 @@ function plugin-clone {
       git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
     fi
     if [[ ! -e $initfile ]]; then
-      local -a initfiles=($plugdir/*.plugin.{z,}sh(N) $plugdir/*.{z,}sh{-theme,}(N))
-      (( $#initfiles )) && ln -sf "${initfiles[1]}" "$initfile"
+      initfiles=($plugdir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      (( $#initfiles )) && ln -sf $initfiles[1] $initfile
     fi
   done
 }

@@ -3,7 +3,7 @@
 # clone contribs and identify their init files
 # let prezto source them later
 function contrib-clone() {
-  local repo plugin_name plugin_dir initfile initfiles
+  local repo plugin_name plugin_dir initfile initfiles=()
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugin_name=${repo:t}
@@ -11,11 +11,12 @@ function contrib-clone() {
     initfile=$plugin_dir/init.zsh
     if [[ ! -d $plugin_dir ]]; then
       echo "Cloning $repo"
-      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+      git clone -q --depth 1 --recursive --shallow-submodules \
+        https://github.com/$repo $plugin_dir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh{-theme,}(N))
-      [[ ${#initfiles[@]} -gt 0 ]] && ln -sf "${initfiles[1]}" "$initfile"
+      initfiles=($plugin_dir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      (( $#initfiles )) && ln -sf $initfiles[1] $initfile
     fi
   done
 }
