@@ -239,7 +239,7 @@ plugin-load $repos
 
 Here is an sample [.zshrc](https://github.com/mattmc3/zsh_unplugged/blob/main/examples/zshrc.zsh).
 
-### :question: Could I use this to make a mico-zsh-plugin-manager?
+### :question: Could I use this to make a micro-zsh-plugin-manager?
 
 Yes! This project uses the [unlicense](https://unlicense.org/). Feel free to use this
 code anywhere. Or, if you prefer to use something already built and supported, this
