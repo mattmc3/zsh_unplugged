@@ -25,7 +25,7 @@ function plugin-clone {
   local repo
   for repo in ${(u)@}; do
     [[ ! -d $ZUNPLUG_REPOS/$repo ]] || continue
-    echo "Cloning $repo..."
+    echo >&2 "Cloning $repo..."
     (
       command git clone -q --depth 1 --recursive --shallow-submodules \
         ${ZUNPLUG_GITURL:-https://github.com}/$repo $ZUNPLUG_REPOS/$repo
