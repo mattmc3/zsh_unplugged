@@ -37,18 +37,22 @@ function plugin-clone {
 
 ##? Load zsh plugins.
 function plugin-load {
-  local repo plugin pluginfile; local -Ua initpaths repos=()
+  source <(plugin-script $@)
+}
+
+##? Script loading of zsh plugins.
+function plugin-script {
+  emulate -L zsh; setopt local_options $_zunplugopts
+  local repo plugin pluginfile defer=0
+  local -Ua initpaths repos=()
+
   # Remove bare words and paths, then split/join to keep the user/repo part.
   for repo in ${${(M)@:#*/*}:#/*}; do
     repo=${(@j:/:)${(@s:/:)repo}[1,2]}
     [[ -e $ZUNPLUG_REPOS/$repo ]] || repos+=$repo
   done
   plugin-clone $repos
-  source <(plugin-script $@)
-}
 
-##? Script loading of zsh plugins.
-function plugin-script {
   local plugin pluginfile defer=0; local -Ua initpaths
   for plugin in $@; do
     initpaths=(
