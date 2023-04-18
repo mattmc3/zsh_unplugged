@@ -30,6 +30,7 @@ zsh_unplugged clones a plugin
 % echo $+functions[zsh-defer]
 0
 % plugin-script romkatv/zsh-defer | substenv ZUNPLUG_REPOS
+Cloning romkatv/zsh-defer...
 source $ZUNPLUG_REPOS/romkatv/zsh-defer/zsh-defer.plugin.zsh
 % plugin-load romkatv/zsh-defer
 % echo $+functions[zsh-defer]
@@ -38,10 +39,18 @@ source $ZUNPLUG_REPOS/romkatv/zsh-defer/zsh-defer.plugin.zsh
 ```
 
 ```zsh
-% echo $ZUNPLUG_REPOS | substenv HOME
-$HOME/.local/share/zsh_unplugged
+% echo $ZUNPLUG_REPOS | substenv XDG_DATA_HOME
+$XDG_DATA_HOME/zsh_unplugged
 % echo $ZUNPLUG_CUSTOM | substenv ZDOTDIR
 $ZDOTDIR/plugins
+%
+```
+
+```zsh
+% setopt glob_dots extended_glob
+% zwcfiles=($ZUNPLUG_REPOS/**/*.zwc(N))
+% echo $#zwcfiles
+1
 %
 ```
 

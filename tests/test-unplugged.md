@@ -36,14 +36,6 @@ Cloning romkatv/zsh-defer...
 %
 ```
 
-```zsh
-% setopt glob_dots extended_glob
-% zwcfiles=($ZPLUGINDIR/**/*.zwc(N))
-% echo $#zwcfiles
-1
-%
-```
-
 ## Teardown
 
 ```zsh

@@ -17,6 +17,8 @@ function t_setup {
   mkdir -p $T_TEMPDIR/plugins
   typeset -g OLD_ZDOTDIR=$ZDOTDIR
   export ZDOTDIR=$T_TEMPDIR/zdotdir
+  typeset -g OLD_XDG_DATA_HOME=$XDG_DATA_HOME
+  export XDG_DATA_HOME=$T_TEMPDIR/.local/share
 
   # add unplugged
   mkdir -p $ZDOTDIR/.unplugged
@@ -30,7 +32,8 @@ function t_teardown {
 
   # reset current session
   export ZDOTDIR=$OLD_ZDOTDIR
-  unset ZPLUGINDIR
+  export XDG_DATA_HOME=$OLD_XDG_DATA_HOME
+  unset ZPLUGINDIR ZUNPLUG_CUSTOM ZUNPLUG_REPOS
 
   # restore original fpath
   fpath=( $T_PREV_FPATH )
