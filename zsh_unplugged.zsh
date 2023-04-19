@@ -22,14 +22,15 @@ typeset -gHa _zunplugopts=(extended_glob glob_dots no_monitor)
 ##? Clone zsh plugins in parallel.
 function plugin-clone {
   emulate -L zsh; setopt local_options $_zunplugopts
-  local repo
+  local repo repodir
   for repo in ${(u)@}; do
-    [[ ! -d $ZUNPLUG_REPOS/$repo ]] || continue
+    repodir=$ZUNPLUG_REPOS/${repo:t}
+    [[ ! -d $repodir ]] || continue
     echo >&2 "Cloning $repo..."
     (
       command git clone -q --depth 1 --recursive --shallow-submodules \
-        ${ZUNPLUG_GITURL:-https://github.com}/$repo $ZUNPLUG_REPOS/$repo
-      plugin-compile $ZUNPLUG_REPOS/$repo
+        ${ZUNPLUG_GITURL:-https://github.com}/$repo $repodir
+      plugin-compile $repodir
     ) &
   done
   wait
@@ -54,6 +55,7 @@ function plugin-script {
   plugin-clone $repos
 
   for plugin in $@; do
+    [[ $plugin == /* ]] || plugin=${plugin#*/}
     initpaths=(
       $ZUNPLUG_CUSTOM/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
       $ZUNPLUG_REPOS/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
