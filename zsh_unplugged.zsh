@@ -1,13 +1,8 @@
-# zsh_unplugged - Tiny, simple, ultra-fast, micro plugin management functionality.
-#                 See https://github.com/mattmc3/zsh_unplugged
-# Usage:
+# zsh_unplugged - Tiny, simple, ultra-fast, zsh micro plugin management
+# Usage (see also https://github.com/mattmc3/zsh_unplugged):
 # source /path/to/zsh_unplugged.zsh
-# repos=(
-#   zsh-users/zsh-syntax-highlighting
-#   zsh-users/zsh-autosuggestions
-#   zsh-users/zsh-history-substring-search
-# )
-# plugin-load $repos
+# myplugins=( zsh-users/zsh-autosuggestions ... )
+# plugin-load $myplugins
 
 # Set zsh_unplugged variables.
 if [[ -n "$ZPLUGINDIR" ]]; then
