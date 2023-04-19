@@ -63,6 +63,7 @@ function plugin-script {
     )
     (( $#initpaths )) || { echo >&2 "Plugin file not found '$plugin'." && continue }
     pluginfile=$initpaths[1]
+    echo "fpath+=$pluginfile:h"
     (( $defer )) && echo zsh-defer source $pluginfile || echo source $pluginfile
     [[ "$plugin:t" == zsh-defer ]] && defer=1
   done
