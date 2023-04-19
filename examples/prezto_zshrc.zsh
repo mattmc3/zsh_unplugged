@@ -15,7 +15,7 @@ function contrib-clone() {
         https://github.com/$repo $plugin_dir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      initfiles=($plugin_dir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
       (( $#initfiles )) && ln -sf $initfiles[1] $initfile
     fi
   done

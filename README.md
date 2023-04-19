@@ -175,7 +175,7 @@ function plugin-load {
         https://github.com/$repo $plugdir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugdir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
       (( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
       ln -sf $initfiles[1] $initfile
     fi
@@ -335,7 +335,7 @@ function plugin-clone {
         https://github.com/$repo $plugdir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugdir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
       (( $#initfiles )) && ln -sf $initfiles[1] $initfile
     fi
   done

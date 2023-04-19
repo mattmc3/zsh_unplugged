@@ -52,10 +52,10 @@ function plugin-script {
   for plugin in $@; do
     [[ $plugin == /* ]] || plugin=${plugin#*/}
     initpaths=(
-      $ZUNPLUG_CUSTOM/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
-      $ZUNPLUG_REPOS/${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
+      {$ZUNPLUG_CUSTOM,$ZUNPLUG_REPOS}/${plugin}/${plugin:t}.{plugin.zsh,zsh-theme,zsh,sh}(N)
+      {$ZUNPLUG_CUSTOM,$ZUNPLUG_REPOS}/${plugin}/*.{plugin.zsh,zsh-theme,zsh,sh}(N)
       $ZUNPLUG_REPOS/$plugin(N)
-      ${plugin}/*.{plugin.zsh,zsh,zsh-theme,sh}(N)
+      ${plugin}/*.{plugin.zsh,zsh-theme,zsh,sh}(N)
       ${plugin}(N)
     )
     (( $#initpaths )) || { echo >&2 "Plugin file not found '$plugin'." && continue }

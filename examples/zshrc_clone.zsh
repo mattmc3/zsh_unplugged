@@ -15,7 +15,7 @@ function plugin-clone {
       git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugdir/*.{plugin.zsh,zsh,sh,zsh-theme}(N))
+      initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
       (( $#initfiles )) && ln -sf $initfiles[1] $initfile
     fi
   done
