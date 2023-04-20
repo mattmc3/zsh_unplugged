@@ -69,16 +69,15 @@ function plugin-script {
 ##? Update plugins.
 function plugin-update {
   emulate -L zsh; setopt local_options $_zunplugopts
-  local repodir repo oldsha newsha
+  local repodir oldsha newsha
   for repodir in $ZUNPLUG_REPOS/**/.git(N/); do
     repodir=${repodir:A:h}
-    repo=${repodir:h:t}/${repodir:t}
-    echo "Updating $repo..."
+    echo "Updating ${repodir:t}..."
     (
       oldsha=$(command git -C $repodir rev-parse --short HEAD)
       command git -C $repodir pull --quiet --ff --depth 1 --rebase --autostash
       newsha=$(command git -C $repodir rev-parse --short HEAD)
-      [[ $oldsha == $newsha ]] || echo "Plugin updated: $repo ($oldsha -> $newsha)"
+      [[ $oldsha == $newsha ]] || echo "Plugin updated: $repodir:t ($oldsha -> $newsha)"
     ) &
   done
   wait
