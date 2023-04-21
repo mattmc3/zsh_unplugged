@@ -21,7 +21,7 @@ function plugin-clone {
   for repo in ${(u)@}; do
     repodir=$ZUNPLUG_REPOS/${repo:t}
     [[ ! -d $repodir ]] || continue
-    echo >&2 "Cloning $repo..."
+    echo "Cloning $repo..."
     (
       command git clone -q --depth 1 --recursive --shallow-submodules \
         ${ZUNPLUG_GITURL:-https://github.com}/$repo $repodir
@@ -47,7 +47,7 @@ function plugin-script {
     repo=${(@j:/:)${(@s:/:)repo}[1,2]}
     [[ -e $ZUNPLUG_REPOS/$repo ]] || repos+=$repo
   done
-  plugin-clone $repos
+  plugin-clone $repos >&2
 
   for plugin in $@; do
     [[ $plugin == /* ]] || plugin=${plugin#*/}
