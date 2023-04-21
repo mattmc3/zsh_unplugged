@@ -1,8 +1,5 @@
-# zsh_unplugged - Tiny, simple, ultra-fast, zsh micro plugin management
-# Usage (see also https://github.com/mattmc3/zsh_unplugged):
-# source /path/to/zsh_unplugged.zsh
-# myplugins=( zsh-users/zsh-autosuggestions ... )
-# plugin-load $myplugins
+# zsh_unplugged - Micro zsh plugin management functions
+# Usage: https://github.com/mattmc3/zsh_unplugged
 
 # Set zsh_unplugged variables.
 if [[ -n "$ZPLUGINDIR" ]]; then
@@ -42,7 +39,7 @@ function plugin-script {
   local repo plugin pluginfile defer=0
   local -Ua initpaths repos=()
 
-  # Remove bare words and paths, then split/join to keep the user/repo part.
+  # Remove bare words and paths, then split/join to keep the 2-part user/repo form.
   for repo in ${${(M)@:#*/*}:#/*}; do
     repo=${(@j:/:)${(@s:/:)repo}[1,2]}
     [[ -e $ZUNPLUG_REPOS/$repo ]] || repos+=$repo
