@@ -1,11 +1,12 @@
+# zsh_unplugged - https://github.com/mattmc3/zsh_unplugged
 #
-# unplugged.zsh - https://github.com/mattmc3/zsh_unplugged
-#
-# One simple, ultra-fast, minimalist plugin management function in <20 lines of code.
+# A simple, fast, minimalist Zsh plugin management function in <20 lines of code.
 #
 # Usage:
-# source ${ZDOTDIR:-~}/unplugged.zsh
+# ZPLUGINDIR=${ZDOTDIR:-~}/plugins
+# source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.zsh
 # repos=(
+#   ...
 #   zsh-users/zsh-syntax-highlighting
 #   zsh-users/zsh-autosuggestions
 #   zsh-users/zsh-history-substring-search
