@@ -1,4 +1,4 @@
-# zsh_unplugged - Micro zsh plugin management functions
+# zsh_unplugged2 - A micro zsh plugin manager based on zsh_unplugged.
 # Usage: https://github.com/mattmc3/zsh_unplugged
 
 # Set zsh_unplugged variables.
