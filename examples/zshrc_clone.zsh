@@ -22,12 +22,12 @@ function plugin-clone {
 }
 
 function plugin-source {
-  local plugdir
+  local plugdir initfile
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   for plugdir in $@; do
     [[ $plugdir = /* ]] || plugdir=$ZPLUGINDIR/$plugdir
     fpath+=$plugdir
-    local initfile=$plugdir/${plugdir:t}.plugin.zsh
+    initfile=$plugdir/${plugdir:t}.plugin.zsh
     (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
