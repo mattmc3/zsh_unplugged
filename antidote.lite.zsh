@@ -26,6 +26,11 @@ function plugin-clone {
           initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
           (( $#initfiles )) && ln -sf $initfiles[1] $initfile
         fi
+        if [[ $repo == sorin-ionescu/prezto ]]; then
+          for init in $plugdir/modules/*/init.zsh; do
+            ln -sf $init $init:h/${init:h:t}.plugin.zsh
+          done
+        fi
         plugin-compile $plugdir
       ) &
     fi
@@ -88,9 +93,9 @@ function plugin-script {
 function plugin-update {
   emulate -L zsh; setopt local_options $_alite_zopts
   local plugdir oldsha newsha
-  for plugdir in $ANTIDOTE_LITE_HOME/**/.git(N/); do
+  for plugdir in $ANTIDOTE_LITE_HOME/*/*/.git(N/); do
     plugdir=${plugdir:A:h}
-    echo "Updating ${plugdir:t}..."
+    echo "Updating ${plugdir:h:t}/${plugdir:t}..."
     (
       oldsha=$(command git -C $plugdir rev-parse --short HEAD)
       command git -C $plugdir pull --quiet --ff --depth 1 --rebase --autostash
