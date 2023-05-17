@@ -40,7 +40,7 @@ myplugins=(
 
 # antidote.lite
 source $ZDOTDIR/lib/antidote.lite.zsh
-plugin-clone $myrepos
+plugin-clone $myrepos $myutils $myprompts $myplugins
 plugin-load --kind path $myutils
 plugin-load --kind fpath $myprompts
 plugin-load $myplugins

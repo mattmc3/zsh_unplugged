@@ -4,7 +4,7 @@
 #          https://github.com/mattmc3/antidote
 # license: https://unlicense.org
 # usage:   plugin-load $myplugins
-# version: 0.0.1
+# version: 0.0.2
 
 # Set variables.
 : ${ANTIDOTE_LITE_HOME:=${XDG_CACHE_HOME:-~/.cache}/antidote.lite}
@@ -14,7 +14,16 @@ typeset -gHa _alite_zopts=(extended_glob glob_dots no_monitor)
 function plugin-clone {
   emulate -L zsh; setopt local_options $_alite_zopts
   local repo plugdir initfile initfiles=()
-  for repo in ${(u)@}; do
+
+  # Remove bare words ${(M)@:#*/*} and paths with leading slash ${@:#/*}.
+  # Then split/join to keep the 2-part user/repo form to bulk-clone repos.
+  local -Ua repos
+  for repo in ${${(M)@:#*/*}:#/*}; do
+    repo=${(@j:/:)${(@s:/:)repo}[1,2]}
+    [[ -e $ANTIDOTE_LITE_HOME/$repo ]] || repos+=$repo
+  done
+
+  for repo in $repos; do
     plugdir=$ANTIDOTE_LITE_HOME/$repo
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
@@ -40,16 +49,6 @@ function plugin-clone {
 
 ##? Load zsh plugins.
 function plugin-load {
-  # Remove bare words ${(M)@:#*/*} and paths with leading slash ${@:#/*}.
-  # Then split/join to keep the 2-part user/repo form to bulk-clone repos.
-  local repo; local -Ua repos
-  for repo in ${${(M)@:#*/*}:#/*}; do
-    repo=${(@j:/:)${(@s:/:)repo}[1,2]}
-    [[ -e $ANTIDOTE_LITE_HOME/$repo ]] || repos+=$repo
-  done
-  (( $#repos )) && plugin-clone $repos >&2
-
-  # script plugins
   source <(plugin-script $@)
 }
 
