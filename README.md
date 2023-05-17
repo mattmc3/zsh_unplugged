@@ -244,7 +244,7 @@ Here is an sample [.zshrc](https://github.com/mattmc3/zsh_unplugged/blob/main/ex
 Yes! This project uses the [unlicense](https://unlicense.org/). Feel free to use this
 code anywhere. Or, if you prefer to use something already built and supported, this
 project includes its own implemetation of a micro plugin manager in the
-[antidote.lite.zsh](antidote.lite.zsh) file. It's <100 lines of code.
+[antidote.lite.zsh](antidote.lite.zsh) file. It's ~100 lines of code.
 
 You can view a full featured example of using zsh_unplugged in the
 [full_featured.zsh example file](examples/full_featured.zsh).
