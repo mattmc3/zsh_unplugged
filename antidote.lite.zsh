@@ -4,20 +4,20 @@
 #          https://github.com/mattmc3/antidote
 # license: https://unlicense.org
 # usage:   plugin-load $myplugins
-# version: 0.0.2
+# version: 0.0.3
 
 # Set variables.
 : ${ANTIDOTE_LITE_HOME:=${XDG_CACHE_HOME:-~/.cache}/antidote.lite}
+: ${ZPLUGINDIR:=${ZSH_CUSTOM:-${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}/plugins}
 typeset -gHa _alite_zopts=(extended_glob glob_dots no_monitor)
 
 ##? Clone zsh plugins in parallel.
 function plugin-clone {
   emulate -L zsh; setopt local_options $_alite_zopts
-  local repo plugdir initfile initfiles=()
+  local repo plugdir; local -Ua repos
 
   # Remove bare words ${(M)@:#*/*} and paths with leading slash ${@:#/*}.
   # Then split/join to keep the 2-part user/repo form to bulk-clone repos.
-  local -Ua repos
   for repo in ${${(M)@:#*/*}:#/*}; do
     repo=${(@j:/:)${(@s:/:)repo}[1,2]}
     [[ -e $ANTIDOTE_LITE_HOME/$repo ]] || repos+=$repo
@@ -25,21 +25,11 @@ function plugin-clone {
 
   for repo in $repos; do
     plugdir=$ANTIDOTE_LITE_HOME/$repo
-    initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
       (
         command git clone -q --depth 1 --recursive --shallow-submodules \
           ${ANTIDOTE_LITE_GITURL:-https://github.com/}$repo $plugdir
-        if [[ ! -e $initfile ]]; then
-          initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
-          (( $#initfiles )) && ln -sf $initfiles[1] $initfile
-        fi
-        if [[ $repo == sorin-ionescu/prezto ]]; then
-          for init in $plugdir/modules/*/init.zsh; do
-            ln -sf $init $init:h/${init:h:t}.plugin.zsh
-          done
-        fi
         plugin-compile $plugdir
       ) &
     fi
@@ -57,7 +47,7 @@ function plugin-script {
   emulate -L zsh; setopt local_options $_alite_zopts
 
   # parse args
-  local kind=zsh  # kind=path,fpath,zsh
+  local kind  # kind=path,fpath
   while (( $# )); do
     case $1 in
       -k|--kind)  shift; kind=$1 ;;
@@ -67,23 +57,23 @@ function plugin-script {
     shift
   done
 
-  local plugdir initfile defer=0
-  for plugdir in $@; do
-    [[ $plugdir = /* ]] || plugdir=$ANTIDOTE_LITE_HOME/$plugdir
-    if [[ $kind == path ]]; then
-      echo "path=(\$path $plugdir)"
-    elif [[ $kind == fpath ]]; then
-      echo "fpath=(\$fpath $plugdir)"
+  local plugin src="source" inits=()
+  for plugin in $@; do
+    if [[ -n "$kind" ]]; then
+      echo "$kind=(\$$kind $ANTIDOTE_LITE_HOME/$plugin)"
     else
-      echo "fpath=(\$fpath $plugdir)"
-      if [[ -d $plugdir ]]; then
-        initfile=$plugdir/${plugdir:t}.plugin.zsh
-      else
-        initfile=$plugdir
-      fi
-      (( $defer )) && printf '%s ' 'zsh-defer'
-      echo "source $initfile"
-      [[ "$plugdir:t" == zsh-defer ]] && defer=1
+      inits=(
+        {$ZPLUGINDIR,$ANTIDOTE_LITE_HOME}/$plugin/${plugin:t}.{plugin.zsh,zsh-theme,zsh,sh}(N)
+        $ANTIDOTE_LITE_HOME/$plugin/*.{plugin.zsh,zsh-theme,zsh,sh}(N)
+        $ANTIDOTE_LITE_HOME/$plugin(N)
+        ${plugin}/*.{plugin.zsh,zsh-theme,zsh,sh}(N)
+        ${plugin}(N)
+      )
+      (( $#inits )) || { echo >&2 "No plugin init found '$plugin'." && continue }
+      plugin=$inits[1]
+      echo "fpath=(\$fpath $plugin:h)"
+      echo "$src $plugin"
+      [[ "$plugin:h:t" == zsh-defer ]] && src="zsh-defer ."
     fi
   done
 }
