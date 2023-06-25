@@ -442,12 +442,30 @@ repos=(
   zsh-users/zsh-syntax-highlighting
   zsh-users/zsh-autosuggestions
 )
+# Array to keep track of installed plugins
+installed_plugins=()
+
 for repo in $repos; do
-  if [[ ! -d $ZSH_CUSTOM/${repo:t} ]]; then
-    git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
+  plugin_name=${repo:t}
+  plugin_path=$ZSH_CUSTOM/plugins/$plugin_name
+
+  if [[ ! -d $plugin_path ]]; then
+    git clone https://github.com/$repo $plugin_path
+  fi
+
+  installed_plugins+=($plugin_name)
+done
+
+# Remove plugins that are not present in the repos array
+for plugin in $ZSH_CUSTOM/plugins/*(/); do
+  plugin_name=${plugin:t}
+  if [[ -z ${installed_plugins[(r)$plugin_name]} && $plugin_name != "example" ]]; then
+    #fix omz update git marge issue with "example.zsh"
+    rm -rf $plugin
   fi
 done
-unset repo{s,}
+
+unset repo{s,} plugin_name plugin_path installed_plugins
 
 # add your external plugins to your OMZ plugins list
 plugins=(
