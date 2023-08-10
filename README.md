@@ -87,38 +87,41 @@ once-and-for-all, we can demystify what plugin managers do. And for basic config
 away with using a plugin manager altogether and simply do it ourselves.
 
 You can grab a ~20 line function and you have everything you need to manage your own
-plugins from here on out. By way of contrast, I ran a rough line count of zinit's
-codebase which comes out to nearly an eye-watering 12,000 lines\*!
+plugins from here on out. By way of contrast, I ran [scc](https://github.com/boyter/scc)
+against the zinit project which comes out to thousands of lines of Zsh code, along with
+thousands of lines in supporting project files.\*!
 
 ```zsh
-# zinit is ~12,000 lines of code
-zinit_tmpdir=$(mktemp -d)
-git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
-wc -l $zinit_tmpdir/**/*.(zunit|zsh|sh) | sed "s|$TMPDIR||g"
-[[ -d $zinit_tmpdir ]] && rm -rf -- $zinit_tmpdir
+$ zinit_tmpdir=$(mktemp -d)
+$ git clone --depth 1 https://github.com/zdharma-continuum/zinit $zinit_tmpdir
+$ git -C $zinit_tmpdir rev-parse --short HEAD
+1375adf8
+$ scc --no-cocomo $zinit_tmpdir
+$ test -d $zinit_tmpdir && rm -rf -- $zinit_tmpdir
 ```
 
 Results:
 ```text
-      26 tmp.CdZxk6jG/docker/init.zsh
-      69 tmp.CdZxk6jG/docker/utils.zsh
-      81 tmp.CdZxk6jG/scripts/docker-build.sh
-     260 tmp.CdZxk6jG/scripts/docker-run.sh
-     333 tmp.CdZxk6jG/scripts/install.sh
-     186 tmp.CdZxk6jG/share/git-process-output.zsh
-      64 tmp.CdZxk6jG/share/rpm2cpio.zsh
-      41 tmp.CdZxk6jG/tests/annexes.zunit
-      38 tmp.CdZxk6jG/tests/commands.zunit
-     703 tmp.CdZxk6jG/tests/gh-r.zunit
-      55 tmp.CdZxk6jG/tests/ices.zunit
-      55 tmp.CdZxk6jG/tests/plugins.zunit
-      84 tmp.CdZxk6jG/tests/snippets.zunit
-     155 tmp.CdZxk6jG/zinit-additional.zsh
-    3438 tmp.CdZxk6jG/zinit-autoload.zsh
-    2589 tmp.CdZxk6jG/zinit-install.zsh
-     397 tmp.CdZxk6jG/zinit-side.zsh
-    3327 tmp.CdZxk6jG/zinit.zsh
-   11901 total
+───────────────────────────────────────────────────────────────────────────────
+Language                 Files     Lines   Blanks  Comments     Code Complexity
+───────────────────────────────────────────────────────────────────────────────
+YAML                        16       643       84        78      481          0
+Zsh                         14     10971      937      1352     8682       1782
+AsciiDoc                     6      5375     1746         0     3629          0
+Markdown                     6      2251      603         0     1648          0
+Shell                        3       674       84        56      534         60
+Makefile                     2       111       27        12       72          7
+SVG                          2       683        2         2      679          0
+Docker ignore                1        10        1         0        9          0
+Dockerfile                   1        41        9         2       30          8
+JSON                         1        47        0         0       47          0
+License                      1        22        4         0       18          0
+gitignore                    1        24        0         0       24          0
+───────────────────────────────────────────────────────────────────────────────
+Total                       54     20852     3497      1502    15853       1857
+───────────────────────────────────────────────────────────────────────────────
+Processed 816700 bytes, 0.817 megabytes (SI)
+───────────────────────────────────────────────────────────────────────────────
 ```
 
 \**Note: SLOC is not intended as anything more here than a rough comparison of effort, maintainability, and complexity*
