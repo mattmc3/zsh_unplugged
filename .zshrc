@@ -21,23 +21,22 @@ if [[ ! -e $ZSH/lib/antidote.lite.zsh ]]; then
     https://raw.githubusercontent.com/mattmc3/zsh_unplugged/main/antidote.lite.zsh
 fi
 
-# Load any files in your lib directory.
+# load any files in your lib directory
 for zlib in $ZSH/lib/*.zsh(N); source $zlib
 unset zlib
 
-# Make a list of util (path) plugins.
+# util (path) plugins
 myutils=(
   romkatv/zsh-bench
 )
 
-# Make a list of prompt (fpath) plugins.
+# promt (fpath) plugins
 myprompts=(
   sindresorhus/pure
   romkatv/powerlevel10k
 )
 
-# Make a list of regular Zsh plugins.
-# More great plugins can be found here: https://github.com/unixorn/awesome-zsh-plugins
+# regular Zsh plugins
 myplugins=(
   # put anything you want in $ZSH_CUSTOM/plugins just like OMZ
   # git
@@ -46,7 +45,9 @@ myplugins=(
 
   # core plugins
   mattmc3/zephyr/plugins/color
+  mattmc3/zephyr/plugins/directory
   mattmc3/zephyr/plugins/editor
+  mattmc3/zephyr/plugins/environment
   mattmc3/zephyr/plugins/history
   mattmc3/zephyr/plugins/utility
   mattmc3/zephyr/plugins/prompt
@@ -66,8 +67,8 @@ myplugins=(
   zsh-users/zsh-history-substring-search
 )
 
-# Clone missing plugins from the lists, and then load them.
-plugin-clone $myutils $myprompts $myplugins
+# clone and load
+plugin-clone $myplugins $myprompts $myutils
 plugin-load --kind path $myutils
 plugin-load --kind fpath $myprompts
 plugin-load $myplugins
