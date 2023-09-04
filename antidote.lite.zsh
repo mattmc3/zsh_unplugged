@@ -4,7 +4,7 @@
 #          https://github.com/mattmc3/antidote
 # license: https://unlicense.org
 # usage:   plugin-load $myplugins
-# version: 0.0.3
+# version: 0.0.4
 
 # Set variables.
 : ${ANTIDOTE_LITE_HOME:=${XDG_CACHE_HOME:-~/.cache}/antidote.lite}
@@ -58,6 +58,7 @@ function plugin-script {
   done
 
   local plugin src="source" inits=()
+  (( ! $+functions[zsh-defer] )) || src="zsh-defer ."
   for plugin in $@; do
     if [[ -n "$kind" ]]; then
       echo "$kind=(\$$kind $ANTIDOTE_LITE_HOME/$plugin)"
