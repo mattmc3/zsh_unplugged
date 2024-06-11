@@ -34,7 +34,7 @@ Here's a list of many (but certainly not all) of them from [awesome-zsh-plugins]
 | [zplug]            | :turtle: slow      | :skull_and_crossbones: Abandonware              |
 | [zplugin][zinit]   | :rabbit2: fast     | :cursing_face: Renamed to zinit, author deleted |
 | [zpm]              | :rabbit2: fast     | :white_check_mark: Active                       |
-| [zr]               | :question: unknown | :imp: Few/no recent commits                     |
+| [zr]               | :rabbit2: fast     | :imp: Complete, bugfixes welcome                |
 
 _Full disclosure, I'm the author of one of these - [antidote] (formerly called [pz])._
 
