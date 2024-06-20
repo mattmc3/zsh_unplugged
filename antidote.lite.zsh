@@ -103,7 +103,7 @@ function plugin-compile {
   emulate -L zsh; setopt local_options $_alite_zopts
   autoload -Uz zrecompile
   local zfile
-  for zfile in ${1:-ANTIDOTE_LITE_HOME}/**/*.zsh{,-theme}(N); do
+  for zfile in ${1:-$ANTIDOTE_LITE_HOME}/**/*.zsh{,-theme}(N); do
     [[ $zfile != */test-data/* ]] || continue
     zrecompile -pq "$zfile"
   done
