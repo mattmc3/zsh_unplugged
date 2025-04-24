@@ -9,7 +9,7 @@ external_plugins=(
   zsh-users/zsh-syntax-highlighting
 )
 for repo in $external_plugins; do
-  if [[ ! -d $ZSH_CUSTOM/${repo:t}/plugins ]]; then
+  if [[ ! -d $ZSH_CUSTOM/plugins/${repo:t} ]]; then
     git clone https://github.com/${repo} $ZSH_CUSTOM/plugins/${repo:t}
   fi
 done
