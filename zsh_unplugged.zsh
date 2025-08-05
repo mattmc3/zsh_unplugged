@@ -37,10 +37,8 @@ function plugin-load {
       echo "Cloning $repo..."
       git clone "${clone_args[@]}" https://github.com/$repo $plugdir
       if [[ -n "$commitsha" ]]; then
-        cd $plugdir
-        git fetch -q origin "$commitsha"
-        git checkout -q "$commitsha"
-        cd - > /dev/null
+        git -C $plugdir fetch -q origin "$commitsha"
+        git -C $plugdir checkout -q "$commitsha"
       fi
     fi
     if [[ ! -e $initfile ]]; then
