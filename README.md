@@ -167,19 +167,30 @@ use a simple function as the basis for everything you need to manage Zsh plugins
 ```zsh
 ##? Clone a plugin, identify its init file, source it, and add it to your fpath.
 function plugin-load {
-  local repo plugdir initfile initfiles=()
+  local plugin repo commitsha plugdir initfile initfiles=()
   : ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
-  for repo in $@; do
+  for plugin in $@; do
+    repo="$plugin"
+    clone_args=(-q --depth 1 --recursive --shallow-submodules)
+    # Pin repo to a specific commit sha if provided
+    if [[ "$plugin" == *'@'* ]]; then
+      repo="${plugin%@*}"
+      commitsha="${plugin#*@}"
+      clone_args+=(--no-checkout)
+    fi
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      git clone -q --depth 1 --recursive --shallow-submodules \
-        https://github.com/$repo $plugdir
+      git clone "${clone_args[@]}" https://github.com/$repo $plugdir
+      if [[ -n "$commitsha" ]]; then
+        git -C $plugdir fetch -q origin "$commitsha"
+        git -C $plugdir checkout -q "$commitsha"
+      fi
     fi
     if [[ ! -e $initfile ]]; then
       initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
-      (( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
+      (( $#initfiles )) || { echo >&2 "No init file found '$repo'." && continue }
       ln -sf $initfiles[1] $initfile
     fi
     fpath+=$plugdir
@@ -188,7 +199,7 @@ function plugin-load {
 }
 ```
 
-That's it. ~20 lines of code and you have a simple, robust Zsh plugin management
+That's it. ~30 lines of code and you have a simple, robust Zsh plugin management
 alternative that is likely as fast as most everything else out there.
 
 What this does is simply clones a Zsh plugin's git repository, and then examines that
@@ -223,17 +234,17 @@ source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.zsh
 # make list of the Zsh plugins you use
 repos=(
   # plugins that you want loaded first
-  sindresorhus/pure
+  'sindresorhus/pure@5c2158096cd992ad73ae4b42aa43ee618383e092'
 
   # other plugins
-  zsh-users/zsh-completions
-  rupa/z
+  'zsh-users/zsh-completions@5f24f3bc42c8a1ccbfa4260a3546590ae24fc843'
+  'rupa/z@d37a763a6a30e1b32766fecc3b8ffd6127f8a0fd'
   # ...
 
   # plugins you want loaded last
-  zsh-users/zsh-syntax-highlighting
-  zsh-users/zsh-history-substring-search
-  zsh-users/zsh-autosuggestions
+  'zsh-users/zsh-syntax-highlighting@5eb677bb0fa9a3e60f0eff031dc13926e093df92'
+  'zsh-users/zsh-history-substring-search@87ce96b1862928d84b1afe7c173316614b30e301'
+  'zsh-users/zsh-autosuggestions@85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5'
 )
 
 # now load your plugins
@@ -327,15 +338,26 @@ are using a project like [zsh-utils] with nested plugins, or using utilities lik
 ```zsh
 # declare a simple plugin-clone function, leaving the user to source plugins themselves
 function plugin-clone {
-  local repo plugdir initfile initfiles=()
+  local plugin repo commitsha plugdir initfile initfiles=()
   ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
-  for repo in $@; do
+  for plugin in $@; do
+    repo="$plugin"
+    clone_args=(-q --depth 1 --recursive --shallow-submodules)
+    # Pin repo to a specific commit sha if provided
+    if [[ "$plugin" == *'@'* ]]; then
+      repo="${plugin%@*}"
+      commitsha="${plugin#*@}"
+      clone_args+=(--no-checkout)
+    fi
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      git clone -q --depth 1 --recursive --shallow-submodules \
-        https://github.com/$repo $plugdir
+      git clone "${clone_args[@]}" https://github.com/$repo $plugdir
+      if [[ -n "$commitsha" ]]; then
+        git -C $plugdir fetch -q origin "$commitsha"
+        git -C $plugdir checkout -q "$commitsha"
+      fi
     fi
     if [[ ! -e $initfile ]]; then
       initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
@@ -363,16 +385,16 @@ You can then use these two functions like so:
 # make a list of github repos
 repos=(
   # not-sourcable plugins
-  romkatv/zsh-bench
+  'romkatv/zsh-bench@d7f9f821688bdff9365e630a8aaeba1fd90499b1'
 
   # projects with nested plugins
-  belak/zsh-utils
-  ohmyzsh/ohmyzsh
+  'belak/zsh-utils@3ebd1e4038756be86da095b88f3713170171aec1'
+  'ohmyzsh/ohmyzsh@a6beb0f5958e935d33b0edb6d4470c3d7c4e8917'
 
   # regular plugins
-  zsh-users/zsh-autosuggestions
-  zsh-users/zsh-history-substring-search
-  zdharma-continuum/fast-syntax-highlighting
+  'zsh-users/zsh-autosuggestions@85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5'
+  'zsh-users/zsh-history-substring-search@87ce96b1862928d84b1afe7c173316614b30e301'
+  'zdharma-continuum/fast-syntax-highlighting@3d574ccf48804b10dca52625df13da5edae7f553'
 )
 plugin-clone $repos
 
@@ -390,7 +412,7 @@ unset _f
 # source other plugins
 plugins=(
   zsh-utils/history
-  zsh-utils/complete
+  zsh-utils/completion
   zsh-utils/utility
   ohmyzsh/plugins/magic-enter
   ohmyzsh/plugins/history-substring-search
