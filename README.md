@@ -18,7 +18,7 @@ don't have much reason to even exist other than as a novelty.
 Here's a list of many (but certainly not all) of them from [awesome-zsh-plugins]:
 
 | Zsh Plugin Manager | Performance        | Current state                                   |
-|--------------------|--------------------|-------------------------------------------------|
+| ------------------ | ------------------ | ----------------------------------------------- |
 | [antibody]         | :rabbit2: fast     | :imp: Maintenance mode, no new features         |
 | [antigen]          | :turtle: slow      | :imp: Maintenance mode, no new features         |
 | [antidote]         | :rabbit2: fast     | :white_check_mark: Active                       |
@@ -41,7 +41,7 @@ _Full disclosure, I'm the author of one of these - [antidote] (formerly called [
 There's new ones popping up all the time too:
 
 | Zsh Plugin Manager | Performance        | Current state        |
-|--------------------|--------------------|----------------------|
+| ------------------ | ------------------ | -------------------- |
 | [mzpm]             | :question: unknown | :hatching_chick: New |
 | [tzpm]             | :question: unknown | :hatching_chick: New |
 | [uz]               | :question: unknown | :hatching_chick: New |
@@ -101,6 +101,7 @@ $ test -d $zinit_tmpdir && rm -rf -- $zinit_tmpdir
 ```
 
 Results:
+
 ```text
 ───────────────────────────────────────────────────────────────────────────────
 Language                 Files     Lines   Blanks  Comments     Code Complexity
@@ -124,7 +125,7 @@ Processed 816700 bytes, 0.817 megabytes (SI)
 ───────────────────────────────────────────────────────────────────────────────
 ```
 
-\**Note: SLOC is not intended as anything more here than a rough comparison of effort, maintainability, and complexity*
+\*_Note: SLOC is not intended as anything more here than a rough comparison of effort, maintainability, and complexity_
 
 ## :tada: The code
 
@@ -233,15 +234,15 @@ source $ZPLUGINDIR/zsh_unplugged/zsh_unplugged.zsh
 
 # make list of the Zsh plugins you use
 repos=(
-  # plugins that you want loaded first
-  'sindresorhus/pure@5c2158096cd992ad73ae4b42aa43ee618383e092'
+  # prompts
+  'sindresorhus/pure'
 
-  # other plugins
-  'zsh-users/zsh-completions@5f24f3bc42c8a1ccbfa4260a3546590ae24fc843'
-  'rupa/z@d37a763a6a30e1b32766fecc3b8ffd6127f8a0fd'
+  # regular plugins
+  'zsh-users/zsh-completions'
+  'ajeetdsouza/zoxide'
   # ...
 
-  # plugins you want loaded last
+  # You can pin plugins to a particular SHA
   'zsh-users/zsh-syntax-highlighting@5eb677bb0fa9a3e60f0eff031dc13926e093df92'
   'zsh-users/zsh-history-substring-search@87ce96b1862928d84b1afe7c173316614b30e301'
   'zsh-users/zsh-autosuggestions@85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5'
@@ -384,15 +385,16 @@ You can then use these two functions like so:
 ```zsh
 # make a list of github repos
 repos=(
-  # not-sourcable plugins
-  'romkatv/zsh-bench@d7f9f821688bdff9365e630a8aaeba1fd90499b1'
+  # not-sourcable (path only) plugins
+  'romkatv/zsh-bench'
 
   # projects with nested plugins
-  'belak/zsh-utils@3ebd1e4038756be86da095b88f3713170171aec1'
+  'belak/zsh-utils'
   'ohmyzsh/ohmyzsh@a6beb0f5958e935d33b0edb6d4470c3d7c4e8917'
 
   # regular plugins
-  'zsh-users/zsh-autosuggestions@85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5'
+  'zsh-users/zsh-completions'
+  'zsh-users/zsh-autosuggestions'
   'zsh-users/zsh-history-substring-search@87ce96b1862928d84b1afe7c173316614b30e301'
   'zdharma-continuum/fast-syntax-highlighting@3d574ccf48804b10dca52625df13da5edae7f553'
 )
