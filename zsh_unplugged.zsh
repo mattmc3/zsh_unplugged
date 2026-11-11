@@ -20,7 +20,11 @@
 
 ##? Clone a plugin using its github repo and (optionally) commit sha,
 ##? identify its init file, source it, and add it to your fpath.
-function plugin-load {
+plugin-load () {
+  # Suppress the error message from 'git clone' stating that no template was found.
+  if [[ ! -d ~/.git_template ]]; then
+    mkdir -p ~/.git_template
+  fi
   local plugin repo commitsha plugdir initfile initfiles=() clone_args=()
   : ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
   for plugin in $@; do
@@ -37,7 +41,7 @@ function plugin-load {
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      git clone "${clone_args[@]}" https://github.com/$repo $plugdir
+      GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://codeberg.org/$repo $plugdir 2>/dev/null || git clone "${clone_args[@]}" https://github.com/$repo $plugdir
       if [[ -n "$commitsha" ]]; then
         git -C $plugdir fetch -q origin "$commitsha"
         git -C $plugdir checkout -q "$commitsha"
