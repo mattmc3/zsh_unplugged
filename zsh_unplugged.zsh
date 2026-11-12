@@ -22,8 +22,9 @@
 ##? identify its init file, source it, and add it to your fpath.
 plugin-load () {
   # Suppress the error message from 'git clone' stating that no template was found.
-  if [[ ! -d ~/.git_template ]]; then
-    mkdir -p ~/.git_template
+  if [[ -z "${GIT_TEMPLATE_DIR}" ]] ; then
+    mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/git/template
+    export GIT_TEMPLATE_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/git/template"
   fi
   local plugin repo commitsha plugdir initfile initfiles=() clone_args=()
   : ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
@@ -41,7 +42,8 @@ plugin-load () {
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://codeberg.org/$repo $plugdir 2>/dev/null || git clone "${clone_args[@]}" https://github.com/$repo $plugdir
+      ZSH_UNPLUGGED_GITHOST=("codeberg.org" "github.com")
+      for githost in ${ZSH_UNPLUGGED_GITHOST}; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
       if [[ -n "$commitsha" ]]; then
         git -C $plugdir fetch -q origin "$commitsha"
         git -C $plugdir checkout -q "$commitsha"
