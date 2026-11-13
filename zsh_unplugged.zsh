@@ -42,8 +42,10 @@ plugin-load () {
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      ZSH_UNPLUGGED_GITHOST=("codeberg.org" "github.com")
-      for githost in ${ZSH_UNPLUGGED_GITHOST}; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
+      # by convention, scalars are SHOUTCASE and arrays are lowercase in shell scripts
+    local -a zsh_unplugged_githost=( "${(@)zsh_unplugged_githost:-github.com}" )
+    local githost
+    for githost in $zsh_unplugged_githost; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
       if [[ -n "$commitsha" ]]; then
         git -C $plugdir fetch -q origin "$commitsha"
         git -C $plugdir checkout -q "$commitsha"
