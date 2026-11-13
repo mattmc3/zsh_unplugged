@@ -43,9 +43,9 @@ plugin-load () {
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
       # by convention, scalars are SHOUTCASE and arrays are lowercase in shell scripts
-    local -a zsh_unplugged_githost=( "${(@)zsh_unplugged_githost:-github.com}" )
-    local githost
-    for githost in $zsh_unplugged_githost; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
+      local -a zsh_unplugged_githost=( "${(@)zsh_unplugged_githost:-github.com}" )
+      local githost
+      for githost in $zsh_unplugged_githost; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
       if [[ -n "$commitsha" ]]; then
         git -C $plugdir fetch -q origin "$commitsha"
         git -C $plugdir checkout -q "$commitsha"
