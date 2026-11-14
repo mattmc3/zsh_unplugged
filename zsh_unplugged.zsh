@@ -42,7 +42,7 @@ plugin-load () {
     initfile=$plugdir/${repo:t}.plugin.zsh
     if [[ ! -d $plugdir ]]; then
       echo "Cloning $repo..."
-      # by convention, scalars are SHOUTCASE and arrays are lowercase in shell scripts
+      # If you would like to use other Git hosting services, you should define them in your .zshrc before the plugins are loaded - for example, by using 'zsh_unplugged_githost=(github.com gitlab.com)'
       local -a zsh_unplugged_githost=( "${(@)zsh_unplugged_githost:-github.com}" )
       local githost
       for githost in $zsh_unplugged_githost; do GIT_TERMINAL_PROMPT=0 git clone "${clone_args[@]}" https://$githost/$repo $plugdir 2>/dev/null; done
